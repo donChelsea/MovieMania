@@ -80,13 +80,11 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:2.43.1")
 
   // Navigation
-  implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
-  implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+  implementation "androidx.navigation:navigation-compose:2.7.5"
 
   // Pager
   implementation("androidx.compose.foundation:foundation:1.5.4")
   implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
-
 
   // Picasso
   implementation 'com.squareup.picasso:picasso:2.8'
