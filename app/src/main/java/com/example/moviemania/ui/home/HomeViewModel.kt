@@ -17,29 +17,83 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: MovieRepository,
-): MovieManiaViewModel<HomeUiState, HomeUiEvent, HomeUiAction>() {
+) : MovieManiaViewModel<HomeUiState, HomeUiEvent, HomeUiAction>() {
     private val _state = MutableStateFlow(HomeUiState())
     override val state: StateFlow<HomeUiState>
         get() = _state.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            repository.getMovies().collectLatest { results ->
-                when (results) {
-                    is Resource.Success -> {
-                        _state.update { it.copy(movies = results.data.orEmpty()) }
-                        Log.e("HomeViewModel", results.data.toString())
-                    }
-                    is Resource.Error -> {
-                        Log.e("HomeViewModel", results.message.toString())
-                    }
-                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
-                }
-            }
-        }
+        initData()
     }
 
     override fun handleAction(action: HomeUiAction) {
 
+    }
+
+    private fun initData() {
+        viewModelScope.launch {
+            repository.getNowPlaying().collectLatest { results ->
+                when (results) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(nowPlaying = results.data.orEmpty()) }
+                        Log.e("mm_test", "HomeViewModel: getNowPlaying: ${_state.value.nowPlaying.toString()}")
+                    }
+
+                    is Resource.Error -> {
+                        Log.e("mm_test", "HomeViewModel: getNowPlaying: ${results.message.toString()}")
+                    }
+
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            repository.getTrending().collectLatest { results ->
+                when (results) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(trending = results.data.orEmpty()) }
+                    }
+
+                    is Resource.Error -> {
+                        Log.e("mm_test", "HomeViewModel: getTrending: ${results.message.toString()}")
+                    }
+
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            repository.getUpcoming().collectLatest { results ->
+                when (results) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(upcoming = results.data.orEmpty()) }
+                    }
+
+                    is Resource.Error -> {
+                        Log.e("mm_test", "HomeViewModel: getUpcoming: ${results.message.toString()}")
+                    }
+
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            repository.getGenres().collectLatest { results ->
+                when (results) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(genres = results.data.orEmpty()) }
+                    }
+
+                    is Resource.Error -> {
+                        Log.e("mm_test", "HomeViewModel: getGenres: ${results.message.toString()}")
+                    }
+
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                }
+            }
+        }
     }
 }

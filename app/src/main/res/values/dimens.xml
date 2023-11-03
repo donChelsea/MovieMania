@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--- Movie Mania Card -->
+    <dimen name="card_elevation">10dp</dimen>
+    <dimen name="card_corner_radius">5dp</dimen>
+    <dimen name="card_horizontal_padding">16dp</dimen>
+    <dimen name="card_vertical_padding">8dp</dimen>
+
+    <!--- Scaffold -->
+    <dimen name="scaffold_top_padding">56dp</dimen>
+</resources>
