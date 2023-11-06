@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.moviemania.ui.home.ui
+package com.example.moviemania.ui.screens.home.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,34 +26,36 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.moviemania.R
 import com.example.moviemania.ui.common.Carousel
 import com.example.moviemania.ui.common.MovieManiaCarouselCard
 import com.example.moviemania.ui.common.MovieManiaPager
 import com.example.moviemania.ui.common.NestedVerticalGrid
 import com.example.moviemania.ui.common.SectionContainer
-import com.example.moviemania.ui.home.HomeUiAction
-import com.example.moviemania.ui.home.HomeUiEvent
-import com.example.moviemania.ui.home.HomeUiState
-import com.example.moviemania.ui.home.HomeViewModel
+import com.example.moviemania.ui.navigation.Screen
+import com.example.moviemania.ui.screens.home.HomeUiAction
+import com.example.moviemania.ui.screens.home.HomeUiEvent
+import com.example.moviemania.ui.screens.home.HomeUiState
+import com.example.moviemania.ui.screens.home.HomeViewModel
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    onWatchListClicked: () -> Unit,
-    onMovieDetailsClicked: () -> Unit
+    navController: NavHostController,
 ) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.events.collect { event ->
             when (event) {
-                HomeUiEvent.OnWatchListClicked -> onWatchListClicked()
+                HomeUiEvent.OnWatchListClicked -> navController.navigate(Screen.WatchList.route)
+                is HomeUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
             }
         }
     }
 
-   HomeLayout(
+    HomeLayout(
         state = state,
         onAction = viewModel::handleAction,
     )
@@ -73,7 +75,7 @@ fun HomeLayout(
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 actions = {
                     IconButton(onClick = { onAction(HomeUiAction.OnWatchListClicked) }) {
-                        Icon(Icons.Filled.FavoriteBorder, stringResource(id = R.string.go_to_watch_list))
+                        Icon(Icons.Filled.FavoriteBorder, stringResource(id = R.string.content_description_go_to_watch_list))
                     }
                 }
             )
@@ -85,13 +87,15 @@ fun HomeLayout(
                     .padding(paddingValues)
             ) {
                 SectionContainer(title = stringResource(id = R.string.now_playing)) {
-                    MovieManiaPager(data = state.nowPlaying)
+                    MovieManiaPager(data = state.nowPlaying) { onAction(HomeUiAction.OnMovieClicked(it)) }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 SectionContainer(title = stringResource(id = R.string.trending)) {
                     Carousel {
                         items(state.trending) { movie ->
-                            MovieManiaCarouselCard(movie = movie, onClick = { })
+                            MovieManiaCarouselCard(movie = movie) {
+                                onAction(HomeUiAction.OnMovieClicked(it))
+                            }
                         }
                     }
                 }
@@ -99,7 +103,9 @@ fun HomeLayout(
                 SectionContainer(title = stringResource(id = R.string.upcoming)) {
                     Carousel {
                         items(state.upcoming) { movie ->
-                            MovieManiaCarouselCard(movie = movie, onClick = { })
+                            MovieManiaCarouselCard(movie = movie) {
+                                onAction(HomeUiAction.OnMovieClicked(it))
+                            }
                         }
                     }
                 }

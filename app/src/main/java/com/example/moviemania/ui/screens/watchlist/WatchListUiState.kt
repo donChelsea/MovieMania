@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.watchlist
+package com.example.moviemania.ui.screens.watchlist
 
 import com.example.moviemania.domain.models.Movie
 

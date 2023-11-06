@@ -1,29 +1,54 @@
 package com.example.moviemania.ui.navigation
 
-import androidx.navigation.NavHostController
-import com.example.moviemania.ui.navigation.Destinations.MovieDetailArgs.MovieId
-import com.example.moviemania.ui.navigation.Destinations.MovieDetails
-import com.example.moviemania.ui.navigation.Destinations.WatchList
+import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
+import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
+import com.example.moviemania.ui.screens.details.ui.MovieDetailsScreen
+import com.example.moviemania.ui.screens.home.HomeViewModel
+import com.example.moviemania.ui.screens.home.ui.HomeScreen
+import com.example.moviemania.ui.screens.watchlist.WatchListViewModel
+import com.example.moviemania.ui.screens.watchlist.ui.WatchListScreen
 
-
-object Destinations {
-    const val Home = "home"
-    const val WatchList = "watchList"
-    const val MovieDetails = "movieDetails"
-
-    object MovieDetailArgs {
-        const val MovieId = "movieId"
-    }
-}
-
-class Actions(navController: NavHostController) {
-    val watchList: () -> Unit = {
-        navController.navigate(WatchList)
-    }
-    val movieDetails: () -> Unit = {
-        navController.navigate("$MovieDetails/$MovieId")
-    }
-    val navigateBack: () -> Unit = {
-        navController.popBackStack()
+@Composable
+fun NavGraph() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home.route
+    ) {
+        composable(route = Screen.Home.route) {
+            val viewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(
+                viewModel = viewModel,
+                navController = navController,
+            )
+        }
+        composable(route = Screen.WatchList.route) {
+            val viewModel = hiltViewModel<WatchListViewModel>()
+            WatchListScreen(
+                viewModel = viewModel,
+                navController = navController
+            )
+        }
+        composable(
+            route = Screen.MovieDetails.route + "/{$MovieId}",
+            arguments = listOf(
+                navArgument(MovieId) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val viewModel = hiltViewModel<MovieDetailsViewModel>()
+            MovieDetailsScreen(
+                viewModel = viewModel,
+                navController = navController,
+            )
+        }
     }
 }

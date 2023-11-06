@@ -19,6 +19,7 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 @Composable
 fun MovieManiaPager(
     data: List<Movie>,
+    onClick: (Int) -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = { data.size })
     Box(
@@ -30,7 +31,7 @@ fun MovieManiaPager(
             state = pagerState,
             modifier = Modifier.padding(bottom = 25.dp),
         ) { page ->
-            MovieManiaNowPlayingCard(movie = data[page], onClick = { })
+            MovieManiaNowPlayingCard(movie = data[page], onClick = { onClick(data[page].id) })
         }
         HorizontalPagerIndicator(
             modifier = Modifier

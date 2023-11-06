@@ -2,11 +2,8 @@ package com.example.moviemania.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -28,30 +25,39 @@ import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.util.MOVIE_IMAGE_URL
 
 @Composable
-fun MovieManiaCarouselCard(
+fun MovieManiaNowPlayingCard(
     movie: Movie,
-    modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .size(300.dp)
+            .clickable { onClick(movie.id) },
         elevation = CardDefaults.cardElevation(
             defaultElevation = R.dimen.card_elevation.dp
         ),
-        modifier = modifier
-            .fillMaxWidth()
-            .size(150.dp)
-            .clickable { onClick(movie.id) }
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(MOVIE_IMAGE_URL + movie.backdropPath)
-                .crossfade(true)
-                .build(),
-            placeholder = painterResource(R.drawable.baseline_image_24),
-            contentDescription = movie.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(text = movie.title)
+        Box(contentAlignment = Alignment.BottomCenter) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(MOVIE_IMAGE_URL + movie.backdropPath)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.baseline_image_24),
+                contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(RectangleShape)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = movie.title,
+                fontSize = 24.sp,
+                color = Color.White,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }

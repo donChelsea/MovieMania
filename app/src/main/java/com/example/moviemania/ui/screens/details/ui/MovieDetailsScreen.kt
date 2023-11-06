@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.moviemania.ui.watchlist.ui
+package com.example.moviemania.ui.screens.details.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,48 +16,48 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import com.example.moviemania.R
-import com.example.moviemania.ui.home.HomeUiEvent
-import com.example.moviemania.ui.watchlist.WatchListUiAction
-import com.example.moviemania.ui.watchlist.WatchListUiEvent
-import com.example.moviemania.ui.watchlist.WatchListUiState
-import com.example.moviemania.ui.watchlist.WatchListViewModel
+import com.example.moviemania.ui.screens.details.DetailsUiAction
+import com.example.moviemania.ui.screens.details.DetailsUiEvent
+import com.example.moviemania.ui.screens.details.DetailsUiState
+import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
 
 @Composable
-fun WatchListScreen(
-    viewModel: WatchListViewModel,
-    onBackClicked: () -> Unit,
+fun MovieDetailsScreen(
+    viewModel: MovieDetailsViewModel,
+    navController: NavHostController,
 ) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.events.collect { event ->
             when (event) {
-                WatchListUiEvent.OnNavigateBack -> onBackClicked()
+               DetailsUiEvent.OnNavigateBack -> navController.popBackStack()
             }
         }
     }
 
-    WatchListLayout(
+    MovieDetailsLayout(
         state = state,
         onAction = viewModel::handleAction
     )
 }
 
 @Composable
-fun WatchListLayout(
-    state: WatchListUiState,
-    onAction: (WatchListUiAction) -> Unit,
+fun MovieDetailsLayout(
+    state: DetailsUiState,
+    onAction: (DetailsUiAction) -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.watch_list))
+                    Text(text = stringResource(id = R.string.movie_details))
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 navigationIcon = {
-                    IconButton(onClick = { onAction(WatchListUiAction.OnNavigateBack) }) {
+                    IconButton(onClick = { onAction(DetailsUiAction.OnNavigateBack) }) {
                         Icon(Icons.Filled.ArrowBack, null)
                     }
                 }
