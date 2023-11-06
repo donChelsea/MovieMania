@@ -10,4 +10,5 @@ interface MovieRepository {
     suspend fun getNowPlaying(): Flow<Resource<List<Movie>>>
     suspend fun getUpcoming(): Flow<Resource<List<Movie>>>
     suspend fun getGenres(): Flow<Resource<List<Genre>>>
+    suspend fun getWatchList(): Flow<Resource<List<Movie>>>
 }

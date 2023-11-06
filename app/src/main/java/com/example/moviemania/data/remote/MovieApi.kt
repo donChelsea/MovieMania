@@ -1,9 +1,9 @@
 package com.example.moviemania.data.remote
 
-import com.example.moviemania.data.dtos.ApiGenresResultDto
-import com.example.moviemania.data.dtos.ApiListResultDto
-import com.example.moviemania.data.dtos.GenreDto
-import com.example.moviemania.data.dtos.MovieDto
+import com.example.moviemania.data.remote.dtos.ApiGenresResultDto
+import com.example.moviemania.data.remote.dtos.ApiListResultDto
+import com.example.moviemania.data.remote.dtos.GenreDto
+import com.example.moviemania.data.remote.dtos.MovieDto
 import com.example.moviemania.util.API_KEY
 import com.example.moviemania.util.API_LANGUAGE
 import com.example.moviemania.util.API_PAGE
