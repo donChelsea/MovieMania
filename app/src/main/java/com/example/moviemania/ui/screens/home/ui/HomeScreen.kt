@@ -29,9 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.moviemania.R
 import com.example.moviemania.ui.common.Carousel
-import com.example.moviemania.ui.common.MovieManiaCarouselCard
+import com.example.moviemania.ui.common.MovieManiaSmallCard
 import com.example.moviemania.ui.common.MovieManiaPager
-import com.example.moviemania.ui.common.NestedVerticalGrid
 import com.example.moviemania.ui.common.SectionContainer
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.home.HomeUiAction
@@ -93,7 +92,7 @@ fun HomeLayout(
                 SectionContainer(title = stringResource(id = R.string.trending)) {
                     Carousel {
                         items(state.trending) { movie ->
-                            MovieManiaCarouselCard(movie = movie) {
+                            MovieManiaSmallCard(movie = movie) {
                                 onAction(HomeUiAction.OnMovieClicked(it))
                             }
                         }
@@ -103,15 +102,11 @@ fun HomeLayout(
                 SectionContainer(title = stringResource(id = R.string.upcoming)) {
                     Carousel {
                         items(state.upcoming) { movie ->
-                            MovieManiaCarouselCard(movie = movie) {
+                            MovieManiaSmallCard(movie = movie) {
                                 onAction(HomeUiAction.OnMovieClicked(it))
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                SectionContainer(title = stringResource(id = R.string.genres)) {
-                    NestedVerticalGrid(data = state.genres) {}
                 }
             }
         })

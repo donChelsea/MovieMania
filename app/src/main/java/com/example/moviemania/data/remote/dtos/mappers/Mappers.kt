@@ -1,26 +1,29 @@
 package com.example.moviemania.data.remote.dtos.mappers
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.moviemania.data.remote.dtos.GenreDto
-import com.example.moviemania.data.remote.dtos.LanguageDto
 import com.example.moviemania.data.remote.dtos.MovieDto
 import com.example.moviemania.data.remote.dtos.ProductionDto
 import com.example.moviemania.domain.models.Genre
-import com.example.moviemania.domain.models.Language
 import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.util.convertReleasedDate
+import com.example.moviemania.util.convertRuntime
 import com.example.moviesrus.domain.models.Production
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun MovieDto.toDomain() = Movie(
     adult = adult,
     backdropPath = backdropPath,
     id = id,
     title = title,
+    tagline = tagline.orEmpty(),
     overview = overview,
     posterPath = posterPath,
-    releaseDate = releaseDate,
-    runtime = runtime,
+    releaseDate = convertReleasedDate(releaseDate),
+    runtime = runtime?.let { convertRuntime(it) },
     genres = genres?.map { it.toDomain() },
     production = production?.map { it.toDomain() },
-    languages = languages?.map { it.toDomain() }
 )
 
 fun GenreDto.toDomain() = Genre(
@@ -29,13 +32,3 @@ fun GenreDto.toDomain() = Genre(
 )
 
 fun ProductionDto.toDomain() = Production(name)
-
-fun LanguageDto.toDomain() = Language(name)
-
-
-
-//fun VideoDto.toDomain() = Video(
-//    key = key,
-//    site = site,
-//    type = type
-//)

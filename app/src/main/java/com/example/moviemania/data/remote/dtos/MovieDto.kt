@@ -8,6 +8,7 @@ data class MovieDto(
     val backdropPath: String?,
     val id: Int,
     val title: String,
+    val tagline: String?,
     val overview: String,
     @SerializedName("poster_path")
     val posterPath: String?,
@@ -16,17 +17,10 @@ data class MovieDto(
     val genres: List<GenreDto>?,
     @SerializedName("production_companies")
     val production: List<ProductionDto>?,
-    @SerializedName("spoken_languages")
-    val languages: List<LanguageDto>?,
     val runtime: Int?,
 )
 
 data class ProductionDto(
-    val name: String
-)
-
-data class LanguageDto(
-    @SerializedName("english_name")
     val name: String
 )
 

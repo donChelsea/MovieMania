@@ -3,8 +3,6 @@ package com.example.moviemania.ui.common
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -17,17 +15,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.moviemania.R
-import com.example.moviemania.domain.models.Genre
-import com.example.moviemania.domain.models.Language
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.util.MOVIE_IMAGE_URL
-import com.example.moviesrus.domain.models.Production
 
 @Composable
 fun MovieManiaListCard(
@@ -70,23 +64,4 @@ fun MovieManiaListCard(
             )
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewListCard() {
-    MovieManiaListCard(
-        movie = Movie(
-            false,
-            "",
-            1,
-            "Movie Title",
-            "Movie Overview",
-            "",
-            "October 20, 2023",
-            listOf(Genre(1, "Action")),
-            listOf(Production("Production team")),
-            listOf(Language("Language")),
-            120
-        ), onClick = { })
 }
