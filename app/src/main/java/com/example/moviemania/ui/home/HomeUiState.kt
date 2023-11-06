@@ -11,6 +11,10 @@ data class HomeUiState(
     val isLoading: Boolean = false,
 )
 
-sealed class HomeUiEvent {}
+sealed class HomeUiEvent {
+    object OnWatchListClicked: HomeUiEvent()
+}
 
-sealed class HomeUiAction {}
+sealed class HomeUiAction {
+    object OnWatchListClicked: HomeUiAction()
+}

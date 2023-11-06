@@ -1,4 +1,4 @@
-package com.example.moviemania.data.dtos
+package com.example.moviemania.data.remote.dtos
 
 import com.google.gson.annotations.SerializedName
 

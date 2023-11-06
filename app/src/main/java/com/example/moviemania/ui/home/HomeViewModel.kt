@@ -27,7 +27,9 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun handleAction(action: HomeUiAction) {
-
+        when (action) {
+            HomeUiAction.OnWatchListClicked -> viewModelScope.launch { _events.emit(HomeUiEvent.OnWatchListClicked) }
+        }
     }
 
     private fun initData() {

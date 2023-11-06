@@ -1,9 +1,9 @@
-package com.example.moviemania.data.dtos.mappers
+package com.example.moviemania.data.remote.dtos.mappers
 
-import com.example.moviemania.data.dtos.GenreDto
-import com.example.moviemania.data.dtos.LanguageDto
-import com.example.moviemania.data.dtos.MovieDto
-import com.example.moviemania.data.dtos.ProductionDto
+import com.example.moviemania.data.remote.dtos.GenreDto
+import com.example.moviemania.data.remote.dtos.LanguageDto
+import com.example.moviemania.data.remote.dtos.MovieDto
+import com.example.moviemania.data.remote.dtos.ProductionDto
 import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Language
 import com.example.moviemania.domain.models.Movie

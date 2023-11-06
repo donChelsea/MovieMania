@@ -2,8 +2,10 @@
     <string name="app_name">MovieMania</string>
 
     <string name="home">Home</string>
+    <string name="watch_list">Watch List</string>
     <string name="trending">Trending</string>
     <string name="now_playing">Now Playing</string>
     <string name="genres">Genres</string>
     <string name="upcoming">Upcoming</string>
+    <string name="go_to_watch_list">Go to watch list</string>
 </resources>

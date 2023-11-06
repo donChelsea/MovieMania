@@ -1,6 +1,6 @@
 package com.example.moviemania.data.remote
 
-import com.example.moviemania.data.dtos.mappers.toDomain
+import com.example.moviemania.data.remote.dtos.mappers.toDomain
 import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.domain.repository.MovieRepository
@@ -61,4 +61,8 @@ class MovieRepositoryImpl @Inject constructor(
     }.catch { e ->
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun getWatchList(): Flow<Resource<List<Movie>>> = flow {
+
+    }
 }
