@@ -4,11 +4,11 @@ import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Movie
 
 data class HomeUiState(
-    val trending: List<Movie> = listOf(),
-    val nowPlaying: List<Movie> = listOf(),
-    val upcoming: List<Movie> = listOf(),
-    val genres: List<Genre> = listOf(),
+    val trending: List<Movie> = emptyList(),
+    val nowPlaying: List<Movie> = emptyList(),
+    val upcoming: List<Movie> = emptyList(),
     val isLoading: Boolean = false,
+    val isError: Boolean = false,
 )
 
 sealed class HomeUiEvent {

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Carousel(
+fun MovieManiaCarousel(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     content: LazyListScope.() -> Unit,

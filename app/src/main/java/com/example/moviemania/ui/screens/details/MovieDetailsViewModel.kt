@@ -28,6 +28,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val movieId = savedStateHandle[MovieId] ?: ""
 
     init {
+        _state.update { it.copy(isLoading = true) }
         initData()
     }
 
@@ -41,13 +42,20 @@ class MovieDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getMovieDetails(movieId).collectLatest { results ->
                 when (results) {
-                    is Resource.Success -> _state.update { it.copy(movie = results.data) }
+                    is Resource.Success -> {
+                        _state.update { it.copy(
+                            movie = results.data,
+                            isLoading = false,
+                            isError = false)
+                        }
+                    }
 
                     is Resource.Error -> {
+                        _state.update { it.copy(isError = true) }
                         Log.e("mm_test", "MovieDetailsViewModel: getMovieDetails: ${results.message.toString()}")
                     }
 
-                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true, isError = false) }
                 }
             }
         }

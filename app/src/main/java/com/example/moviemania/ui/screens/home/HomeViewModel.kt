@@ -23,6 +23,7 @@ class HomeViewModel @Inject constructor(
         get() = _state.asStateFlow()
 
     init {
+        _state.update { it.copy(isLoading = true) }
         initData()
     }
 
@@ -37,13 +38,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getNowPlaying().collectLatest { results ->
                 when (results) {
-                    is Resource.Success -> _state.update { it.copy(nowPlaying = results.data.orEmpty()) }
+                    is Resource.Success -> _state.update { it.copy(
+                        nowPlaying = results.data.orEmpty(),
+                        isLoading = false,
+                        isError = false)
+                    }
 
                     is Resource.Error -> {
+                        _state.update { it.copy(isError = true) }
                         Log.e("mm_test", "HomeViewModel: getNowPlaying: ${results.message.toString()}")
                     }
 
-                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true, isError = false) }
                 }
             }
         }

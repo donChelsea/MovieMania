@@ -4,6 +4,7 @@ package com.example.moviemania.ui.common
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ fun MovieManiaPager(
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.padding(bottom = 25.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp),
         ) { page ->
             MovieManiaNowPlayingCard(movie = data[page], onClick = { onClick(data[page].id) })
         }

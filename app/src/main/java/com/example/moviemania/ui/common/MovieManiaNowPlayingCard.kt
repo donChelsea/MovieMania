@@ -3,6 +3,7 @@ package com.example.moviemania.ui.common
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -11,11 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -34,6 +39,7 @@ fun MovieManiaNowPlayingCard(
         modifier = modifier
             .fillMaxWidth()
             .size(300.dp)
+            .padding(horizontal = 2.dp)
             .clickable { onClick(movie.id) },
         elevation = CardDefaults.cardElevation(
             defaultElevation = R.dimen.card_elevation.dp
@@ -54,9 +60,19 @@ fun MovieManiaNowPlayingCard(
             )
             Text(
                 text = movie.title,
-                fontSize = 24.sp,
-                color = Color.White,
-                modifier = Modifier.fillMaxWidth()
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    shadow = Shadow(
+                        color = Color.Black,
+                        offset = Offset(x = 2.0f, y = 2.0f),
+                        blurRadius = 0.75f
+                    )
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
             )
         }
     }

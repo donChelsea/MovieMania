@@ -28,11 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.moviemania.R
-import com.example.moviemania.ui.common.Carousel
+import com.example.moviemania.ui.common.MovieManiaCarousel
 import com.example.moviemania.ui.common.MovieManiaSmallCard
 import com.example.moviemania.ui.common.MovieManiaPager
 import com.example.moviemania.ui.common.SectionContainer
 import com.example.moviemania.ui.navigation.Screen
+import com.example.moviemania.ui.screens.empty.ErrorScreen
+import com.example.moviemania.ui.screens.empty.LoadingScreen
 import com.example.moviemania.ui.screens.home.HomeUiAction
 import com.example.moviemania.ui.screens.home.HomeUiEvent
 import com.example.moviemania.ui.screens.home.HomeUiState
@@ -54,10 +56,16 @@ fun HomeScreen(
         }
     }
 
-    HomeLayout(
-        state = state,
-        onAction = viewModel::handleAction,
-    )
+    if (state.isLoading) {
+        LoadingScreen()
+    } else if (state.isError) {
+        ErrorScreen()
+    } else {
+        HomeLayout(
+            state = state,
+            onAction = viewModel::handleAction,
+        )
+    }
 }
 
 @Composable
@@ -90,7 +98,7 @@ fun HomeLayout(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 SectionContainer(title = stringResource(id = R.string.trending)) {
-                    Carousel {
+                    MovieManiaCarousel {
                         items(state.trending) { movie ->
                             MovieManiaSmallCard(movie = movie) {
                                 onAction(HomeUiAction.OnMovieClicked(it))
@@ -100,7 +108,7 @@ fun HomeLayout(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 SectionContainer(title = stringResource(id = R.string.upcoming)) {
-                    Carousel {
+                    MovieManiaCarousel {
                         items(state.upcoming) { movie ->
                             MovieManiaSmallCard(movie = movie) {
                                 onAction(HomeUiAction.OnMovieClicked(it))
