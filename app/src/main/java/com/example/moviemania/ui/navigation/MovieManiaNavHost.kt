@@ -16,7 +16,7 @@ import com.example.moviemania.ui.screens.watchlist.WatchListViewModel
 import com.example.moviemania.ui.screens.watchlist.ui.WatchListScreen
 
 @Composable
-fun NavGraph() {
+fun MovieManiaNavHost() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
