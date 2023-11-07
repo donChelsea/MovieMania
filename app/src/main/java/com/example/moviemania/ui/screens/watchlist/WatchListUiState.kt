@@ -1,10 +1,11 @@
-package com.example.moviemania.ui.watchlist
+package com.example.moviemania.ui.screens.watchlist
 
 import com.example.moviemania.domain.models.Movie
 
 data class WatchListUiState(
     val movies: List<Movie> = listOf(),
     val isLoading: Boolean = false,
+    val isError: Boolean = false,
 )
 
 sealed class WatchListUiEvent {

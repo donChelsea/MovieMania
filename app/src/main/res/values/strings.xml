@@ -3,9 +3,11 @@
 
     <string name="home">Home</string>
     <string name="watch_list">Watch List</string>
+    <string name="movie_details">Movie Details</string>
     <string name="trending">Trending</string>
     <string name="now_playing">Now Playing</string>
     <string name="genres">Genres</string>
     <string name="upcoming">Upcoming</string>
-    <string name="go_to_watch_list">Go to watch list</string>
+    <string name="content_description_go_to_watch_list">Go to watch list</string>
+    <string name="error_screen">Error loading data</string>
 </resources>

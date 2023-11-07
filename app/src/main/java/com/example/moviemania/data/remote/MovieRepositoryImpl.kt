@@ -1,7 +1,6 @@
 package com.example.moviemania.data.remote
 
 import com.example.moviemania.data.remote.dtos.mappers.toDomain
-import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.util.Resource
@@ -40,17 +39,6 @@ class MovieRepositoryImpl @Inject constructor(
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getGenres(): Flow<Resource<List<Genre>>> = flow {
-        emit(Resource.Loading(isLoading = true))
-
-        val movies = api.getGenres().genres
-        with(movies) {
-            emit(Resource.Success(data = map { it.toDomain() }))
-        }
-    }.catch { e ->
-        emit(Resource.Error(message = e.message.toString()))
-    }.flowOn(Dispatchers.IO)
-
     override suspend fun getUpcoming(): Flow<Resource<List<Movie>>> = flow {
         emit(Resource.Loading(isLoading = true))
 
@@ -62,7 +50,20 @@ class MovieRepositoryImpl @Inject constructor(
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getMovieDetails(movieId: String): Flow<Resource<Movie>> = flow {
+        emit(Resource.Loading(isLoading = true))
+
+        val movie = api.getMovieDetails(movieId = movieId)
+        with(movie) {
+            emit(Resource.Success(toDomain()))
+        }
+    }.catch { e ->
+        emit(Resource.Error(message = e.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
     override suspend fun getWatchList(): Flow<Resource<List<Movie>>> = flow {
 
     }
+
+
 }

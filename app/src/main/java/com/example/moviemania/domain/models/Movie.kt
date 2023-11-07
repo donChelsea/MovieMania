@@ -10,11 +10,11 @@ data class Movie(
     val backdropPath: String?,
     val id: Int,
     val title: String,
+    val tagline: String,
     val overview: String,
     val posterPath: String?,
     val releaseDate: String,
     val genres: List<Genre>?,
     val production: List<Production>?,
-    val languages: List<Language>?,
-    val runtime: Int?,
+    val runtime: String?,
 ): Parcelable

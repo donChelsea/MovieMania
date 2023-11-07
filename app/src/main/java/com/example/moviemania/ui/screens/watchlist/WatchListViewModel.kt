@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.watchlist
+package com.example.moviemania.ui.screens.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.repository.MovieRepository

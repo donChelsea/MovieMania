@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.home
+package com.example.moviemania.ui.screens.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -23,12 +23,14 @@ class HomeViewModel @Inject constructor(
         get() = _state.asStateFlow()
 
     init {
+        _state.update { it.copy(isLoading = true) }
         initData()
     }
 
     override fun handleAction(action: HomeUiAction) {
         when (action) {
             HomeUiAction.OnWatchListClicked -> viewModelScope.launch { _events.emit(HomeUiEvent.OnWatchListClicked) }
+            is HomeUiAction.OnMovieClicked -> viewModelScope.launch { _events.emit(HomeUiEvent.OnMovieClicked(action.movieId)) }
         }
     }
 
@@ -36,16 +38,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getNowPlaying().collectLatest { results ->
                 when (results) {
-                    is Resource.Success -> {
-                        _state.update { it.copy(nowPlaying = results.data.orEmpty()) }
-                        Log.e("mm_test", "HomeViewModel: getNowPlaying: ${_state.value.nowPlaying.toString()}")
+                    is Resource.Success -> _state.update { it.copy(
+                        nowPlaying = results.data.orEmpty(),
+                        isLoading = false,
+                        isError = false)
                     }
 
                     is Resource.Error -> {
+                        _state.update { it.copy(isError = true) }
                         Log.e("mm_test", "HomeViewModel: getNowPlaying: ${results.message.toString()}")
                     }
 
-                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true, isError = false) }
                 }
             }
         }
@@ -53,9 +57,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getTrending().collectLatest { results ->
                 when (results) {
-                    is Resource.Success -> {
-                        _state.update { it.copy(trending = results.data.orEmpty()) }
-                    }
+                    is Resource.Success -> _state.update { it.copy(trending = results.data.orEmpty()) }
 
                     is Resource.Error -> {
                         Log.e("mm_test", "HomeViewModel: getTrending: ${results.message.toString()}")
@@ -69,28 +71,10 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getUpcoming().collectLatest { results ->
                 when (results) {
-                    is Resource.Success -> {
-                        _state.update { it.copy(upcoming = results.data.orEmpty()) }
-                    }
+                    is Resource.Success -> _state.update { it.copy(upcoming = results.data.orEmpty()) }
 
                     is Resource.Error -> {
                         Log.e("mm_test", "HomeViewModel: getUpcoming: ${results.message.toString()}")
-                    }
-
-                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            repository.getGenres().collectLatest { results ->
-                when (results) {
-                    is Resource.Success -> {
-                        _state.update { it.copy(genres = results.data.orEmpty()) }
-                    }
-
-                    is Resource.Error -> {
-                        Log.e("mm_test", "HomeViewModel: getGenres: ${results.message.toString()}")
                     }
 
                     is Resource.Loading -> _state.update { it.copy(isLoading = true) }
