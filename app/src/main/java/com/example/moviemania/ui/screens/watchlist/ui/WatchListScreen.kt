@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,11 +73,6 @@ fun WatchListLayout(
                     Text(text = stringResource(id = R.string.watch_list))
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
-                actions = {
-                    IconButton(onClick = {  }) {
-                        Icon(Icons.Filled.FavoriteBorder, stringResource(id = R.string.content_description_go_to_watch_list))
-                    }
-                },
                 navigationIcon = {
                     IconButton(onClick = { onAction(WatchListUiAction.OnNavigateBack) }) {
                         Icon(Icons.Filled.ArrowBack, null)
