@@ -20,11 +20,12 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 @Composable
 fun MovieManiaPager(
     data: List<Movie>,
+    modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = { data.size })
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
     ) {
