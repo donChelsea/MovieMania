@@ -8,6 +8,5 @@ interface MovieRepository {
     suspend fun getTrending(): Flow<Resource<List<Movie>>>
     suspend fun getNowPlaying(): Flow<Resource<List<Movie>>>
     suspend fun getUpcoming(): Flow<Resource<List<Movie>>>
-    suspend fun getWatchList(): Flow<Resource<List<Movie>>>
     suspend fun getMovieDetails(movieId: String): Flow<Resource<Movie>>
 }

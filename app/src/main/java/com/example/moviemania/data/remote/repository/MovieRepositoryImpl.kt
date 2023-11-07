@@ -1,5 +1,8 @@
-package com.example.moviemania.data.remote
+package com.example.moviemania.data.remote.repository
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.example.moviemania.data.remote.MovieApi
 import com.example.moviemania.data.remote.dtos.mappers.toDomain
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.domain.repository.MovieRepository
@@ -17,6 +20,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val api: MovieApi
 ) : MovieRepository {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getTrending(): Flow<Resource<List<Movie>>> = flow {
         emit(Resource.Loading(isLoading = true))
 
@@ -28,6 +32,7 @@ class MovieRepositoryImpl @Inject constructor(
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getNowPlaying(): Flow<Resource<List<Movie>>> = flow {
         emit(Resource.Loading(isLoading = true))
 
@@ -39,6 +44,7 @@ class MovieRepositoryImpl @Inject constructor(
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getUpcoming(): Flow<Resource<List<Movie>>> = flow {
         emit(Resource.Loading(isLoading = true))
 
@@ -60,10 +66,4 @@ class MovieRepositoryImpl @Inject constructor(
     }.catch { e ->
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
-
-    override suspend fun getWatchList(): Flow<Resource<List<Movie>>> = flow {
-
-    }
-
-
 }

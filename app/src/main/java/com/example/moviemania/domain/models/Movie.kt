@@ -2,6 +2,7 @@ package com.example.moviemania.domain.models
 
 import android.os.Parcelable
 import com.example.moviesrus.domain.models.Production
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,4 +18,8 @@ data class Movie(
     val genres: List<Genre>?,
     val production: List<Production>?,
     val runtime: String?,
-): Parcelable
+): Parcelable {
+
+    @IgnoredOnParcel
+    var isSaved = false
+}

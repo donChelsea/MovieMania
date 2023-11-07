@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.repository.MovieRepository
+import com.example.moviemania.domain.repository.WatchListRepository
 import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
 import com.example.moviemania.util.MovieManiaViewModel
 import com.example.moviemania.util.Resource
@@ -19,6 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val repository: MovieRepository,
+    private val movieRepository: MovieRepository,
+    private val watchListRepository: WatchListRepository,
     savedStateHandle: SavedStateHandle,
 ) : MovieManiaViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
     private val _state = MutableStateFlow(DetailsUiState())
@@ -35,27 +38,42 @@ class MovieDetailsViewModel @Inject constructor(
     override fun handleAction(action: DetailsUiAction) {
         when (action) {
             DetailsUiAction.OnNavigateBack -> viewModelScope.launch { _events.emit(DetailsUiEvent.OnNavigateBack) }
+            is DetailsUiAction.OnSave -> {
+                if (action.movie.isSaved) {
+                    action.movie.isSaved = false
+                    viewModelScope.launch { watchListRepository.deleteMovie(action.movie) }
+                    _state.update { it.copy(action.movie) }
+                } else {
+                    action.movie.isSaved = true
+                    viewModelScope.launch { watchListRepository.saveMovie(action.movie) }
+                    _state.update { it.copy(action.movie) }
+                }
+            }
         }
     }
 
     private fun initData() {
         viewModelScope.launch {
             repository.getMovieDetails(movieId).collectLatest { results ->
-                when (results) {
-                    is Resource.Success -> {
-                        _state.update { it.copy(
-                            movie = results.data,
-                            isLoading = false,
-                            isError = false)
+                movieRepository.getMovieDetails(movieId).collectLatest { results ->
+                    when (results) {
+                        is Resource.Success -> {
+                            _state.update {
+                                it.copy(
+                                    movie = results.data,
+                                    isLoading = false,
+                                    isError = false
+                                )
+                            }
                         }
-                    }
 
-                    is Resource.Error -> {
-                        _state.update { it.copy(isError = true) }
-                        Log.e("mm_test", "MovieDetailsViewModel: getMovieDetails: ${results.message.toString()}")
-                    }
+                        is Resource.Error -> {
+                            _state.update { it.copy(isError = true) }
+                            Log.e("mm_test", "MovieDetailsViewModel: getMovieDetails: ${results.message.toString()}")
+                        }
 
-                    is Resource.Loading -> _state.update { it.copy(isLoading = true, isError = false) }
+                        is Resource.Loading -> _state.update { it.copy(isLoading = true, isError = false) }
+                    }
                 }
             }
         }

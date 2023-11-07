@@ -14,4 +14,5 @@ sealed class DetailsUiEvent {
 
 sealed class DetailsUiAction {
     object OnNavigateBack: DetailsUiAction()
+    data class OnSave(val movie: Movie): DetailsUiAction()
 }
