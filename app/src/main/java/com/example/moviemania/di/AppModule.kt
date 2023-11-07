@@ -1,13 +1,14 @@
 package com.example.moviemania.di
 
 import android.app.Application
-import androidx.room.Database
 import androidx.room.Room
 import com.example.moviemania.data.local.MovieDao
 import com.example.moviemania.data.local.MovieDatabase
+import com.example.moviemania.data.local.repository.WatchListRepositoryImpl
 import com.example.moviemania.data.remote.MovieApi
-import com.example.moviemania.data.remote.MovieRepositoryImpl
+import com.example.moviemania.data.remote.repository.MovieRepositoryImpl
 import com.example.moviemania.domain.repository.MovieRepository
+import com.example.moviemania.domain.repository.WatchListRepository
 import com.example.moviemania.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -46,4 +47,8 @@ private object AppModule {
     @Provides
     @Singleton
     fun provideMovieDao(database: MovieDatabase): MovieDao = database.movieDao()
+
+    @Provides
+    @Singleton
+    fun provideWatchListRepository(dao: MovieDao): WatchListRepository = WatchListRepositoryImpl(dao)
 }

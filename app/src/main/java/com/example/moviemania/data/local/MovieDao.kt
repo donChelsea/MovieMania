@@ -5,15 +5,16 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addMovie(movie: MovieEntity)
+    suspend fun saveMovie(movie: MovieEntity)
 
     @Query("SELECT * FROM movies")
-    fun getAllMovies(): List<MovieEntity>
+    fun getSavedMovies(): Flow<List<MovieEntity>>
 
     @Delete
     suspend fun deleteMovie(movie: MovieEntity)

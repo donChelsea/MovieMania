@@ -45,8 +45,6 @@ fun WatchListScreen(
 
     if (state.isLoading) {
         LoadingScreen()
-    } else if (state.isError) {
-        ErrorScreen()
     } else {
         WatchListLayout(
             state = state,
