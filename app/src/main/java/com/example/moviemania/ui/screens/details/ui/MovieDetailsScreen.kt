@@ -69,8 +69,8 @@ fun MovieDetailsLayout(
     state: DetailsUiState,
     onAction: (DetailsUiAction) -> Unit,
 ) {
-    var favoriteIcon by remember {
-        mutableStateOf(if (state.movie?.isSaved == true) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder)
+    var isMovieLiked by remember {
+        mutableStateOf(state.movie?.isSaved)
     }
 
     Scaffold(
@@ -82,7 +82,13 @@ fun MovieDetailsLayout(
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 actions = {
                     IconButton(onClick = { onAction(DetailsUiAction.OnSave(state.movie as Movie)) }) {
-                        Icon(favoriteIcon, stringResource(id = R.string.content_description_save_unsave))
+                        Icon(
+                            imageVector = if (isMovieLiked == true) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
+                            contentDescription = stringResource(id = R.string.content_description_save_unsave))
                     }
                 },
                 navigationIcon = {
