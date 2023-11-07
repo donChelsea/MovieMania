@@ -22,7 +22,7 @@ class WatchListRepositoryImpl @Inject constructor(
         return dao.getSavedMovies().map { list -> list.map { movieEntity -> movieEntity.toDomain() } }
     }
 
-    override suspend fun deletedMovie(movie: Movie) {
+    override suspend fun deleteMovie(movie: Movie) {
         dao.deleteMovie(movie.toEntity())
     }
 }

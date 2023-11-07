@@ -9,5 +9,6 @@
     <string name="genres">Genres</string>
     <string name="upcoming">Upcoming</string>
     <string name="content_description_go_to_watch_list">Go to watch list</string>
+    <string name="content_description_save_unsave">Save or unsave</string>
     <string name="error_screen">Error loading data</string>
 </resources>

@@ -2,6 +2,9 @@
 
 package com.example.moviemania.ui.screens.watchlist.ui
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -16,9 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.moviemania.R
+import com.example.moviemania.ui.common.MovieManiaWatchListCard
+import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.empty.ErrorScreen
 import com.example.moviemania.ui.screens.empty.LoadingScreen
 import com.example.moviemania.ui.screens.home.HomeUiAction
@@ -39,6 +45,7 @@ fun WatchListScreen(
         viewModel.events.collect { event ->
             when (event) {
                 WatchListUiEvent.OnNavigateBack -> navController.popBackStack()
+                is WatchListUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
             }
         }
     }
@@ -65,11 +72,6 @@ fun WatchListLayout(
                     Text(text = stringResource(id = R.string.watch_list))
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
-                actions = {
-                    IconButton(onClick = {  }) {
-                        Icon(Icons.Filled.FavoriteBorder, stringResource(id = R.string.content_description_go_to_watch_list))
-                    }
-                },
                 navigationIcon = {
                     IconButton(onClick = { onAction(WatchListUiAction.OnNavigateBack) }) {
                         Icon(Icons.Filled.ArrowBack, null)
@@ -77,6 +79,13 @@ fun WatchListLayout(
                 }
             )
         }, content = { paddingValues ->
-
+            LazyColumn(modifier = Modifier.padding(paddingValues)) {
+                items(state.movies) { movie ->
+                    MovieManiaWatchListCard(
+                        movie = movie,
+                        onClick = { onAction(WatchListUiAction.OnMovieClicked(it))}
+                    )
+                }
+            }
         })
 }

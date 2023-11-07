@@ -2,7 +2,6 @@ package com.example.moviemania.ui.screens.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.domain.repository.WatchListRepository
 import com.example.moviemania.util.MovieManiaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +28,7 @@ class WatchListViewModel @Inject constructor(
     override fun handleAction(action: WatchListUiAction) {
         when (action) {
             WatchListUiAction.OnNavigateBack -> viewModelScope.launch { _events.emit(WatchListUiEvent.OnNavigateBack) }
+            is WatchListUiAction.OnMovieClicked -> viewModelScope.launch { _events.emit(WatchListUiEvent.OnMovieClicked(action.movieId)) }
         }
     }
 
@@ -48,7 +48,7 @@ class WatchListViewModel @Inject constructor(
 
     private fun deleteMovie(movie: Movie) {
         viewModelScope.launch {
-            repository.deletedMovie(movie)
+            repository.deleteMovie(movie)
         }
     }
 }

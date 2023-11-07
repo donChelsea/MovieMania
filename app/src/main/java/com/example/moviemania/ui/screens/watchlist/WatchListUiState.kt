@@ -9,8 +9,10 @@ data class WatchListUiState(
 
 sealed class WatchListUiEvent {
     object OnNavigateBack: WatchListUiEvent()
+    data class OnMovieClicked(val movieId: Int): WatchListUiEvent()
 }
 
 sealed class WatchListUiAction {
     object OnNavigateBack: WatchListUiAction()
+    data class OnMovieClicked(val movieId: Int): WatchListUiAction()
 }
