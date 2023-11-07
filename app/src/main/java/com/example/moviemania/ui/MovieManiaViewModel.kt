@@ -1,4 +1,4 @@
-package com.example.moviemania.util
+package com.example.moviemania.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

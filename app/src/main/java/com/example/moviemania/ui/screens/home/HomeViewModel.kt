@@ -3,7 +3,7 @@ package com.example.moviemania.ui.screens.home
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.util.MovieManiaViewModel
+import com.example.moviemania.ui.MovieManiaViewModel
 import com.example.moviemania.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
