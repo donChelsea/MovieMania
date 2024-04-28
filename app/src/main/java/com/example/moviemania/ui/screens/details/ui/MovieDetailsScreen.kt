@@ -33,9 +33,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.moviemania.R
-import com.example.moviemania.ui.common.MovieManiaLargeCard
+import com.example.moviemania.ui.composables.MovieManiaLargeCard
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.ui.screens.details.DetailsUiAction
 import com.example.moviemania.ui.screens.details.DetailsUiEvent
@@ -45,9 +46,9 @@ import com.example.moviemania.util.mockMovie
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModel,
-    navController: NavHostController,
+    navController: NavHostController
 ) {
+    val viewModel: MovieDetailsViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {

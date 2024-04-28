@@ -7,8 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,51 +18,67 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moviemania.R
-import androidx.compose.ui.Modifier
-import com.example.moviemania.ui.common.MovieManiaWatchListCard
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.ui.composables.MovieManiaWatchListCard
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.empty.ErrorScreen
 import com.example.moviemania.ui.screens.empty.LoadingScreen
-import com.example.moviemania.ui.screens.watchlist.WatchListUiAction
-import com.example.moviemania.ui.screens.watchlist.WatchListUiEvent
-import com.example.moviemania.ui.screens.watchlist.WatchListUiState
-import com.example.moviemania.ui.screens.watchlist.WatchListViewModel
+import com.example.moviemania.ui.screens.watchlist.ScreenData
+import com.example.moviemania.ui.screens.watchlist.WatchlistUiAction
+import com.example.moviemania.ui.screens.watchlist.WatchlistUiEvent
+import com.example.moviemania.ui.screens.watchlist.WatchlistUiState
+import com.example.moviemania.ui.screens.watchlist.WatchlistViewModel
 
 @Composable
-fun WatchListScreen(
-    viewModel: WatchListViewModel,
-    navController: NavController,
+fun WatchlistScreen(
+    navController: NavController
 ) {
+    val viewModel: WatchlistViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.events.collect { event ->
             when (event) {
-                WatchListUiEvent.OnNavigateBack -> navController.popBackStack()
-                is WatchListUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
+                WatchlistUiEvent.OnNavigateBack -> navController.popBackStack()
+                is WatchlistUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
             }
         }
     }
 
-    if (state.isLoading) {
-        LoadingScreen()
-    } else if (state.isError) {
-        ErrorScreen()
-    } else {
-        WatchListLayout(
-            state = state,
-            onAction = viewModel::handleAction
+    WatchlistLayout(
+        state = state,
+        onAction = viewModel::handleAction
+    )
+}
+
+@Composable
+fun WatchlistLayout(
+    state: WatchlistUiState,
+    onAction: (WatchlistUiAction) -> Unit,
+) {
+    when (state.screenData) {
+        ScreenData.Empty -> {}
+        ScreenData.Error -> ErrorScreen()
+        ScreenData.Loading -> LoadingScreen()
+        ScreenData.Offline -> {}
+        is ScreenData.Data -> WatchlistContent(
+            movies = state.screenData.movies,
+            onAction = onAction
         )
     }
 }
 
+
 @Composable
-fun WatchListLayout(
-    state: WatchListUiState,
-    onAction: (WatchListUiAction) -> Unit,
+fun WatchlistContent(
+    movies: List<Movie>,
+    onAction: (WatchlistUiAction) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -74,19 +88,20 @@ fun WatchListLayout(
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 navigationIcon = {
-                    IconButton(onClick = { onAction(WatchListUiAction.OnNavigateBack) }) {
+                    IconButton(onClick = { onAction(WatchlistUiAction.OnNavigateBack) }) {
                         Icon(Icons.Filled.ArrowBack, null)
                     }
                 }
             )
         }, content = { paddingValues ->
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
-                items(state.movies) { movie ->
+                items(movies) { movie ->
                     MovieManiaWatchListCard(
                         movie = movie,
-                        onClick = { onAction(WatchListUiAction.OnMovieClicked(it))}
+                        onClick = { onAction(WatchlistUiAction.OnMovieClicked(it)) }
                     )
                 }
             }
-        })
+        }
+    )
 }

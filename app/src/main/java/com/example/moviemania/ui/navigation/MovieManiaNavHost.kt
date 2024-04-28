@@ -12,8 +12,8 @@ import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
 import com.example.moviemania.ui.screens.details.ui.MovieDetailsScreen
 import com.example.moviemania.ui.screens.home.HomeViewModel
 import com.example.moviemania.ui.screens.home.ui.HomeScreen
-import com.example.moviemania.ui.screens.watchlist.WatchListViewModel
-import com.example.moviemania.ui.screens.watchlist.ui.WatchListScreen
+import com.example.moviemania.ui.screens.watchlist.WatchlistViewModel
+import com.example.moviemania.ui.screens.watchlist.ui.WatchlistScreen
 
 @Composable
 fun MovieManiaNavHost() {
@@ -23,18 +23,10 @@ fun MovieManiaNavHost() {
         startDestination = Screen.Home.route
     ) {
         composable(route = Screen.Home.route) {
-            val viewModel = hiltViewModel<HomeViewModel>()
-            HomeScreen(
-                viewModel = viewModel,
-                navController = navController,
-            )
+            HomeScreen(navController = navController)
         }
         composable(route = Screen.WatchList.route) {
-            val viewModel = hiltViewModel<WatchListViewModel>()
-            WatchListScreen(
-                viewModel = viewModel,
-                navController = navController
-            )
+            WatchlistScreen(navController = navController)
         }
         composable(
             route = Screen.MovieDetails.route + "/{$MovieId}",
@@ -44,11 +36,7 @@ fun MovieManiaNavHost() {
                 }
             )
         ) {
-            val viewModel = hiltViewModel<MovieDetailsViewModel>()
-            MovieDetailsScreen(
-                viewModel = viewModel,
-                navController = navController,
-            )
+            MovieDetailsScreen(navController = navController)
         }
     }
 }

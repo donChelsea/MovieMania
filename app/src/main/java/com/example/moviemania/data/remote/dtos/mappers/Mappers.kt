@@ -9,7 +9,7 @@ import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.util.convertReleasedDate
 import com.example.moviemania.util.convertRuntime
-import com.example.moviesrus.domain.models.Production
+import com.example.moviemania.domain.models.Production
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun MovieDto.toDomain() = Movie(

@@ -1,7 +1,6 @@
 package com.example.moviemania.domain.models
 
 import android.os.Parcelable
-import com.example.moviesrus.domain.models.Production
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

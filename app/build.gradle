@@ -107,4 +107,5 @@ dependencies {
 
   // ViewModel
   implementation 'androidx.fragment:fragment-ktx:1.5.5'
+  implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 }

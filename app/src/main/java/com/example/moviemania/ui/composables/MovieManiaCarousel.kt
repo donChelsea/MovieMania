@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.common
+package com.example.moviemania.ui.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

@@ -1,13 +1,11 @@
 @file:OptIn(ExperimentalLayoutApi::class)
 
-package com.example.moviemania.ui.common
+package com.example.moviemania.ui.composables
 
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.example.moviemania.domain.models.Genre
 
 @Composable

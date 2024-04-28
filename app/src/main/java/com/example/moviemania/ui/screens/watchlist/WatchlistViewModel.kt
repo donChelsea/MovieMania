@@ -14,28 +14,32 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WatchListViewModel @Inject constructor(
+class WatchlistViewModel @Inject constructor(
     private val repository: WatchListRepository,
-) : MovieManiaViewModel<WatchListUiState, WatchListUiEvent, WatchListUiAction>() {
-    private val _state = MutableStateFlow(WatchListUiState())
-    override val state: StateFlow<WatchListUiState>
+) : MovieManiaViewModel<WatchlistUiState, WatchlistUiEvent, WatchlistUiAction>() {
+    private val _state = MutableStateFlow(WatchlistUiState())
+    override val state: StateFlow<WatchlistUiState>
         get() = _state.asStateFlow()
 
     init {
         initData()
     }
 
-    override fun handleAction(action: WatchListUiAction) {
+    override fun handleAction(action: WatchlistUiAction) {
         when (action) {
-            WatchListUiAction.OnNavigateBack -> viewModelScope.launch { _events.emit(WatchListUiEvent.OnNavigateBack) }
-            is WatchListUiAction.OnMovieClicked -> viewModelScope.launch { _events.emit(WatchListUiEvent.OnMovieClicked(action.movieId)) }
+            WatchlistUiAction.OnNavigateBack -> viewModelScope.launch {
+                _events.emit(WatchlistUiEvent.OnNavigateBack)
+            }
+            is WatchlistUiAction.OnMovieClicked -> viewModelScope.launch {
+                _events.emit(WatchlistUiEvent.OnMovieClicked(action.movieId))
+            }
         }
     }
 
     private fun initData() {
         viewModelScope.launch {
             repository.getSavedMovies().collectLatest { movies ->
-                _state.update { it.copy(movies = movies) }
+                newUiState(ScreenData.Data(movies))
             }
         }
     }
@@ -51,4 +55,7 @@ class WatchListViewModel @Inject constructor(
             repository.deleteMovie(movie)
         }
     }
+
+    private fun newUiState(screenData: ScreenData) =
+        _state.update { state -> state.copy(screenData = screenData) }
 }

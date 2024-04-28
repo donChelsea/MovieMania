@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,12 +26,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.moviemania.R
-import com.example.moviemania.ui.common.MovieManiaCarousel
-import com.example.moviemania.ui.common.MovieManiaSmallCard
-import com.example.moviemania.ui.common.MovieManiaPager
-import com.example.moviemania.ui.common.SectionContainer
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.ui.composables.MovieManiaCarousel
+import com.example.moviemania.ui.composables.MovieManiaPager
+import com.example.moviemania.ui.composables.MovieManiaSmallCard
+import com.example.moviemania.ui.composables.SectionContainer
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.empty.ErrorScreen
 import com.example.moviemania.ui.screens.empty.LoadingScreen
@@ -40,39 +42,55 @@ import com.example.moviemania.ui.screens.home.HomeUiAction
 import com.example.moviemania.ui.screens.home.HomeUiEvent
 import com.example.moviemania.ui.screens.home.HomeUiState
 import com.example.moviemania.ui.screens.home.HomeViewModel
+import com.example.moviemania.ui.screens.home.ScreenData
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
     navController: NavHostController,
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.events.collect { event ->
             when (event) {
-                HomeUiEvent.OnWatchListClicked -> navController.navigate(Screen.WatchList.route)
+                HomeUiEvent.GoToWatchlist -> navController.navigate(Screen.WatchList.route)
                 is HomeUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
             }
         }
     }
 
-    if (state.isLoading) {
-        LoadingScreen()
-    } else if (state.isError) {
-        ErrorScreen()
-    } else {
-        HomeLayout(
-            state = state,
-            onAction = viewModel::handleAction,
-        )
-    }
+    HomeLayout(
+        state = state,
+        onAction = viewModel::handleAction
+    )
 }
 
 @Composable
 fun HomeLayout(
     state: HomeUiState,
     onAction: (HomeUiAction) -> Unit,
+) {
+    when (state.screenData) {
+        ScreenData.Empty -> {}
+        ScreenData.Error -> ErrorScreen()
+        ScreenData.Loading -> LoadingScreen()
+        ScreenData.Offline -> {}
+        is ScreenData.Data -> HomeContent(
+            trending = state.screenData.trending,
+            nowPlaying = state.screenData.nowPlaying,
+            upcoming = state.screenData.upcoming,
+            onAction = onAction
+        )
+    }
+}
+
+@Composable
+fun HomeContent(
+    trending: List<Movie>,
+    nowPlaying: List<Movie>,
+    upcoming: List<Movie>,
+    onAction: (HomeUiAction) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -82,7 +100,7 @@ fun HomeLayout(
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 actions = {
-                    IconButton(onClick = { onAction(HomeUiAction.OnWatchListClicked) }) {
+                    IconButton(onClick = { onAction(HomeUiAction.GoToWatchlist) }) {
                         Icon(Icons.Filled.ViewList, stringResource(id = R.string.content_description_go_to_watch_list))
                     }
                 }
@@ -95,22 +113,26 @@ fun HomeLayout(
                     .padding(paddingValues)
             ) {
                 SectionContainer(title = stringResource(id = R.string.now_playing)) {
-                    MovieManiaPager(data = state.nowPlaying) { onAction(HomeUiAction.OnMovieClicked(it)) }
+                    MovieManiaPager(data = nowPlaying) { onAction(HomeUiAction.OnMovieClicked(it)) }
                 }
+
                 Spacer(modifier = Modifier.height(12.dp))
+
                 SectionContainer(title = stringResource(id = R.string.trending)) {
                     MovieManiaCarousel {
-                        items(state.trending) { movie ->
+                        items(trending) { movie ->
                             MovieManiaSmallCard(movie = movie) {
                                 onAction(HomeUiAction.OnMovieClicked(it))
                             }
                         }
                     }
                 }
+
                 Spacer(modifier = Modifier.height(12.dp))
+
                 SectionContainer(title = stringResource(id = R.string.upcoming)) {
                     MovieManiaCarousel {
-                        items(state.upcoming) { movie ->
+                        items(upcoming) { movie ->
                             MovieManiaSmallCard(movie = movie) {
                                 onAction(HomeUiAction.OnMovieClicked(it))
                             }
@@ -118,5 +140,6 @@ fun HomeLayout(
                     }
                 }
             }
-        })
+        }
+    )
 }
