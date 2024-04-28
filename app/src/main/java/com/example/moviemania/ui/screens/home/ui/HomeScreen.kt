@@ -12,6 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ViewList
+import androidx.compose.material.icons.outlined.Computer
+import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -101,7 +103,7 @@ fun HomeContent(
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 actions = {
                     IconButton(onClick = { onAction(HomeUiAction.GoToWatchlist) }) {
-                        Icon(Icons.Filled.ViewList, stringResource(id = R.string.content_description_go_to_watch_list))
+                        Icon(Icons.Outlined.List, stringResource(id = R.string.content_description_go_to_watch_list))
                     }
                 }
             )

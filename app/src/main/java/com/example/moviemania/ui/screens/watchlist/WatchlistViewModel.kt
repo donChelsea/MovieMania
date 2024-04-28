@@ -2,9 +2,10 @@ package com.example.moviemania.ui.screens.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.repository.WatchListRepository
+import com.example.moviemania.domain.repository.WatchlistRepository
 import com.example.moviemania.ui.MovieManiaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
-    private val repository: WatchListRepository,
+    private val repository: WatchlistRepository,
 ) : MovieManiaViewModel<WatchlistUiState, WatchlistUiEvent, WatchlistUiAction>() {
     private val _state = MutableStateFlow(WatchlistUiState())
     override val state: StateFlow<WatchlistUiState>
@@ -37,7 +38,7 @@ class WatchlistViewModel @Inject constructor(
     }
 
     private fun initData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.getSavedMovies().collectLatest { movies ->
                 newUiState(ScreenData.Data(movies))
             }
@@ -45,13 +46,13 @@ class WatchlistViewModel @Inject constructor(
     }
 
     private fun saveMovie(movie: Movie) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.saveMovie(movie)
         }
     }
 
     private fun deleteMovie(movie: Movie) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteMovie(movie)
         }
     }

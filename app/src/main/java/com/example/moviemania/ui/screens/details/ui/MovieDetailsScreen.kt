@@ -2,6 +2,7 @@
 
 package com.example.moviemania.ui.screens.details.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,10 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -36,17 +38,20 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.moviemania.R
-import com.example.moviemania.ui.composables.MovieManiaLargeCard
 import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.ui.composables.MovieManiaLargeCard
 import com.example.moviemania.ui.screens.details.DetailsUiAction
 import com.example.moviemania.ui.screens.details.DetailsUiEvent
 import com.example.moviemania.ui.screens.details.DetailsUiState
 import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
+import com.example.moviemania.ui.screens.details.ScreenData
+import com.example.moviemania.ui.screens.empty.ErrorScreen
+import com.example.moviemania.ui.screens.empty.LoadingScreen
 import com.example.moviemania.util.mockMovie
 
 @Composable
 fun MovieDetailsScreen(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val viewModel: MovieDetailsViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
@@ -70,10 +75,27 @@ fun MovieDetailsLayout(
     state: DetailsUiState,
     onAction: (DetailsUiAction) -> Unit,
 ) {
-    var isMovieLiked by remember {
-        mutableStateOf(state.movie?.isSaved)
+    when (state.screenData) {
+        ScreenData.Empty -> {}
+        ScreenData.Error -> ErrorScreen()
+        ScreenData.Loading -> LoadingScreen()
+        ScreenData.Offline -> {}
+        is ScreenData.Data -> state.screenData.movie?.let {
+            MovieDetailsContent(
+                movie = it,
+                isSaved = state.screenData.isSaved,
+                onAction = onAction
+            )
+        }
     }
+}
 
+@Composable
+fun MovieDetailsContent(
+    movie: Movie,
+    isSaved: Boolean,
+    onAction: (DetailsUiAction) -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,14 +104,13 @@ fun MovieDetailsLayout(
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(),
                 actions = {
-                    IconButton(onClick = { onAction(DetailsUiAction.OnSave(state.movie as Movie)) }) {
+                    IconButton(onClick = {
+                        onAction(DetailsUiAction.OnSaveToWatchlist(movie))
+                    }) {
                         Icon(
-                            imageVector = if (isMovieLiked == true) {
-                                Icons.Filled.Favorite
-                            } else {
-                                Icons.Outlined.FavoriteBorder
-                            },
-                            contentDescription = stringResource(id = R.string.content_description_save_unsave))
+                            imageVector = if (isSaved) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                            contentDescription = stringResource(id = R.string.content_description_save_unsave)
+                        )
                     }
                 },
                 navigationIcon = {
@@ -104,7 +125,7 @@ fun MovieDetailsLayout(
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-                state.movie?.let { movie ->
+                movie.let { movie ->
                     MovieManiaLargeCard(movie = movie)
                     Text(
                         text = movie.title,
@@ -128,7 +149,7 @@ fun MovieDetailsLayout(
                             .padding(bottom = 12.dp)
                     )
                     Text(
-                        text = state.movie.overview,
+                        text = movie.overview,
                         style = TextStyle(
                             fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -137,7 +158,7 @@ fun MovieDetailsLayout(
                             .fillMaxWidth()
                             .padding(bottom = 12.dp)
                     )
-                    state.movie.genres?.map { it.name }?.let { genres ->
+                    movie.genres?.map { it.name }?.let { genres ->
                         Text(
                             text = genres.joinToString(", "),
                             style = TextStyle(
@@ -150,7 +171,7 @@ fun MovieDetailsLayout(
                         )
                     }
                     Text(
-                        text = "Runtime: ${state.movie.runtime.toString()}",
+                        text = "Runtime: ${movie.runtime.toString()}",
                         style = TextStyle(
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -160,7 +181,7 @@ fun MovieDetailsLayout(
                             .padding(bottom = 12.dp)
                     )
                     Text(
-                        text = "Released: ${state.movie.releaseDate}",
+                        text = "Released: ${movie.releaseDate}",
                         style = TextStyle(
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -176,6 +197,6 @@ fun MovieDetailsLayout(
 
 @Preview
 @Composable
-private fun PreviewMovieDetailsLayout() {
-    MovieDetailsLayout(state = DetailsUiState(movie = mockMovie), onAction = {})
+private fun PreviewMovieDetailsContent() {
+    MovieDetailsContent(movie = mockMovie, isSaved = false, onAction = {})
 }
