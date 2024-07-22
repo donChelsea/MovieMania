@@ -33,10 +33,6 @@ private object AppModule {
 
     @Provides
     @Singleton
-    fun provideMovieRepository(api: MovieApi): MovieRepository = MovieRepositoryImpl(api)
-
-    @Provides
-    @Singleton
     fun provideMovieDatabase(app: Application): MovieDatabase =
         Room.databaseBuilder(
             app,
@@ -47,8 +43,4 @@ private object AppModule {
     @Provides
     @Singleton
     fun provideMovieDao(database: MovieDatabase): MovieDao = database.movieDao()
-
-    @Provides
-    @Singleton
-    fun provideWatchlistRepository(dao: MovieDao): WatchlistRepository = WatchlistRepositoryImpl(dao)
 }
