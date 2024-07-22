@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.example.moviemania.data.remote.MovieApi
 import com.example.moviemania.data.remote.dtos.mappers.toDomain
 import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.domain.models.Video
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.util.Resource
 import kotlinx.coroutines.Dispatchers
@@ -56,12 +57,24 @@ class MovieRepositoryImpl @Inject constructor(
         emit(Resource.Error(message = e.message.toString()))
     }.flowOn(Dispatchers.IO)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getMovieDetails(movieId: String): Flow<Resource<Movie>> = flow {
         emit(Resource.Loading(isLoading = true))
 
         val movie = api.getMovieDetails(movieId = movieId)
         with(movie) {
             emit(Resource.Success(toDomain()))
+        }
+    }.catch { e ->
+        emit(Resource.Error(message = e.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getVideos(movieId: String): Flow<Resource<List<Video>>> = flow {
+        emit(Resource.Loading(isLoading = true))
+
+        val videos = api.getVideos(movieId = movieId).results
+        with(videos) {
+            emit(Resource.Success(map { it.toDomain() }))
         }
     }.catch { e ->
         emit(Resource.Error(message = e.message.toString()))

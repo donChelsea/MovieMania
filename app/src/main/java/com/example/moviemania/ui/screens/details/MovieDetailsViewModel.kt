@@ -3,34 +3,39 @@ package com.example.moviemania.ui.screens.details
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.moviemania.domain.models.Video
+import com.example.moviemania.domain.models.VideoItem
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.domain.repository.WatchlistRepository
 import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
 import com.example.moviemania.ui.MovieManiaViewModel
-import com.example.moviemania.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val repository: MovieRepository,
     private val movieRepository: MovieRepository,
     private val watchlistRepository: WatchlistRepository,
     savedStateHandle: SavedStateHandle,
 ) : MovieManiaViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
+
     private val _state = MutableStateFlow(DetailsUiState())
     override val state: StateFlow<DetailsUiState>
         get() = _state.asStateFlow()
 
     private val movieId = savedStateHandle[MovieId] ?: ""
+    private val currentlyPlayingIndex = MutableStateFlow<Int?>(null)
+    private val videoItems = MutableStateFlow<List<VideoItem>>(emptyList())
 
     init {
         initData()
@@ -60,20 +65,41 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun initData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            movieRepository.getMovieDetails(movieId).collectLatest { results ->
-                when (results) {
-                    is Resource.Success -> {
-                        newUiState(ScreenData.Data(results.data))
-                    }
-
-                    is Resource.Error -> {
-                        newUiState(ScreenData.Error)
-                        Log.e(TAG, "getMovieDetails: ${results.message.toString()}")
-                    }
-
-                    else -> newUiState(ScreenData.Loading)
+        viewModelScope.launch {
+            combine(
+                movieRepository.getMovieDetails(movieId = movieId),
+                movieRepository.getVideos(movieId = movieId)
+            ) { details, videos ->
+                if (details.data != null && videos.data?.isNotEmpty() == true) {
+                    ScreenData.Data(movie = details.data, videos = videos.data)
+                } else {
+                    ScreenData.Loading
                 }
+            }
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    Log.e(TAG, it.message.toString())
+                    newUiState(ScreenData.Error)
+                }
+                .collectLatest { screenData -> newUiState(screenData) }
+        }
+    }
+
+    fun onPlayVideoClick(playbackPosition: Long, videoIndex: Int) {
+        when (currentlyPlayingIndex.value) {
+            null -> currentlyPlayingIndex.value = videoIndex
+            videoIndex -> {
+                currentlyPlayingIndex.value = null
+                videoItems.value = videoItems.value.toMutableList().also { list ->
+                    list[videoIndex] = list[videoIndex].copy(lastPlayedPosition = playbackPosition)
+                }
+            }
+
+            else -> {
+                videoItems.value = videoItems.value.toMutableList().also { list ->
+                    list[currentlyPlayingIndex.value!!] = list[currentlyPlayingIndex.value!!].copy(lastPlayedPosition = playbackPosition)
+                }
+                currentlyPlayingIndex.value = videoIndex
             }
         }
     }

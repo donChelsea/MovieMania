@@ -29,7 +29,7 @@ fun MovieManiaLargeCard(
             contentAlignment = Alignment.Center,
             modifier = modifier
                 .fillMaxWidth()
-                .size(300.dp)
+                .size(275.dp)
                 .clip(RectangleShape),
         ) {
             AsyncImage(

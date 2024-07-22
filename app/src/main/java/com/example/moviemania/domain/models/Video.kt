@@ -6,7 +6,10 @@ import javax.annotation.concurrent.Immutable
 
 @Parcelize
 @Immutable
-data class Genre(
-    val id: Int,
+data class Video(
+    val id: String,
     val name: String,
+    val type: String,
+    val site: String,
+    val key: String
 ): Parcelable

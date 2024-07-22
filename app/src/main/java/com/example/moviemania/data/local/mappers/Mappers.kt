@@ -13,8 +13,6 @@ fun MovieEntity.toDomain() = Movie(
     tagline = "",
     backdropPath = null,
     runtime = null,
-    production = null,
-    adult = false
 )
 
 fun Movie.toEntity() = MovieEntity(

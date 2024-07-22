@@ -2,6 +2,7 @@ package com.example.moviemania.data.remote
 
 import com.example.moviemania.data.remote.dtos.ApiListResultDto
 import com.example.moviemania.data.remote.dtos.MovieDto
+import com.example.moviemania.data.remote.dtos.VideoDto
 import com.example.moviemania.util.API_KEY
 import com.example.moviemania.util.API_LANGUAGE
 import com.example.moviemania.util.API_PAGE
@@ -36,4 +37,10 @@ interface MovieApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = API_LANGUAGE
     ): MovieDto
+
+    @GET("movie/{movieId}/videos")
+    suspend fun getVideos(
+        @Path("movieId") movieId: String,
+        @Query("api_key") apiKey: String = API_KEY
+    ): ApiListResultDto<VideoDto>
 }

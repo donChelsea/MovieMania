@@ -3,10 +3,11 @@ package com.example.moviemania.domain.models
 import android.os.Parcelable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import javax.annotation.concurrent.Immutable
 
 @Parcelize
+@Immutable
 data class Movie(
-    val adult: Boolean,
     val backdropPath: String?,
     val id: Int,
     val title: String,
@@ -15,8 +16,7 @@ data class Movie(
     val posterPath: String?,
     val releaseDate: String,
     val genres: List<Genre>?,
-    val production: List<Production>?,
-    val runtime: String?,
+    val runtime: String?
 ): Parcelable {
 
     @IgnoredOnParcel
