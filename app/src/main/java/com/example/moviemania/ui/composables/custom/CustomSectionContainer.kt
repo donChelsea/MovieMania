@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.composables
+package com.example.moviemania.ui.composables.custom
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SectionContainer(
+fun CustomSectionContainer(
     modifier: Modifier = Modifier,
     title: String,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
@@ -31,7 +31,6 @@ fun SectionContainer(
         Text(
             text = title,
             modifier = Modifier.padding(horizontal = 32.dp),
-//            style = FacebookPortalTheme.typography.body1,
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(44.dp))

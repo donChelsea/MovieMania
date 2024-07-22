@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.composables
+package com.example.moviemania.ui.composables.cards
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,10 +17,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.moviemania.R
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.util.MOVIE_IMAGE_URL
+import com.example.moviemania.common.MOVIE_IMAGE_URL
 
 @Composable
-fun MovieManiaSmallCard(
+fun CarouselItemCard(
     movie: Movie,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,

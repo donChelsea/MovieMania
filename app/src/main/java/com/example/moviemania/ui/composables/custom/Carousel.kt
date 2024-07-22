@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.composables
+package com.example.moviemania.ui.composables.custom
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MovieManiaCarousel(
+fun Carousel(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     content: LazyListScope.() -> Unit,

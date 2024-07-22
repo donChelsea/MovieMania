@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.screens.empty
+package com.example.moviemania.ui.composables.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingScreen() {
+fun ShowLoading() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
@@ -23,7 +23,7 @@ fun LoadingScreen() {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PreviewLoadingScreen() {
-    LoadingScreen()
+    ShowLoading()
 }

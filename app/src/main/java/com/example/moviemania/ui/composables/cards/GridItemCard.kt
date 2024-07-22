@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.composables
+package com.example.moviemania.ui.composables.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.moviemania.domain.models.Genre
 
 @Composable
-fun MovieManiaGridCard(
+fun GridItemCard(
     genre: Genre,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },

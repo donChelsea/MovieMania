@@ -17,10 +17,6 @@ data class MovieDto(
     val runtime: Int?,
 )
 
-data class ProductionDto(
-    val name: String
-)
-
 data class VideoDto(
     val name: String,
     val key: String,

@@ -3,9 +3,9 @@ package com.example.moviemania.data.remote
 import com.example.moviemania.data.remote.dtos.ApiListResultDto
 import com.example.moviemania.data.remote.dtos.MovieDto
 import com.example.moviemania.data.remote.dtos.VideoDto
-import com.example.moviemania.util.API_KEY
-import com.example.moviemania.util.API_LANGUAGE
-import com.example.moviemania.util.API_PAGE
+import com.example.moviemania.common.API_KEY
+import com.example.moviemania.common.API_LANGUAGE
+import com.example.moviemania.common.API_PAGE
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

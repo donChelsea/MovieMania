@@ -7,7 +7,7 @@ import com.example.moviemania.data.remote.dtos.mappers.toDomain
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.domain.models.Video
 import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.util.Resource
+import com.example.moviemania.common.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

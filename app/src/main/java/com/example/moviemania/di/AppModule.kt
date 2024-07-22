@@ -9,7 +9,7 @@ import com.example.moviemania.data.remote.MovieApi
 import com.example.moviemania.data.remote.repository.MovieRepositoryImpl
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.domain.repository.WatchlistRepository
-import com.example.moviemania.util.BASE_URL
+import com.example.moviemania.common.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.example.moviemania.util
+package com.example.moviemania.common
 
 import android.os.Build
 import androidx.annotation.RequiresApi

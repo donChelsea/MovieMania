@@ -12,14 +12,10 @@ data class DetailsUiState(
 )
 
 @Immutable
-sealed class DetailsUiEvent {
-    object OnNavigateBack : DetailsUiEvent()
-}
+sealed class DetailsUiEvent {}
 
 @Immutable
 sealed class DetailsUiAction {
-    object OnNavigateBack : DetailsUiAction()
-
     @Immutable
     data class OnSaveToWatchlist(val movie: Movie) : DetailsUiAction()
 }
@@ -29,7 +25,6 @@ sealed class ScreenData {
     object Empty : ScreenData()
     object Loading : ScreenData()
     object Error : ScreenData()
-    object Offline : ScreenData()
 
     @Immutable
     data class Data(

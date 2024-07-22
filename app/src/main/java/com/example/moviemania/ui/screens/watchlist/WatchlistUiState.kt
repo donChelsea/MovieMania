@@ -5,31 +5,26 @@ import com.example.moviemania.domain.models.Movie
 
 @Immutable
 data class WatchlistUiState(
-    val screenData: ScreenData = ScreenData.Empty
+    val screenData: ScreenData = ScreenData.Initial
 )
 
 @Immutable
 sealed class WatchlistUiEvent {
-    object OnNavigateBack: WatchlistUiEvent()
-
     @Immutable
     data class OnMovieClicked(val movieId: Int): WatchlistUiEvent()
 }
 
 @Immutable
 sealed class WatchlistUiAction {
-    object OnNavigateBack: WatchlistUiAction()
-
     @Immutable
     data class OnMovieClicked(val movieId: Int): WatchlistUiAction()
 }
 
 @Immutable
 sealed class ScreenData {
-    object Empty : ScreenData()
+    object Initial : ScreenData()
     object Loading : ScreenData()
     object Error : ScreenData()
-    object Offline : ScreenData()
 
     @Immutable
     data class Data(

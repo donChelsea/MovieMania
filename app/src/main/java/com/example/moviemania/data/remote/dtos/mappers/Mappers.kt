@@ -7,8 +7,8 @@ import com.example.moviemania.data.remote.dtos.MovieDto
 import com.example.moviemania.data.remote.dtos.VideoDto
 import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.util.convertReleasedDate
-import com.example.moviemania.util.convertRuntime
+import com.example.moviemania.common.convertReleasedDate
+import com.example.moviemania.common.convertRuntime
 import com.example.moviemania.domain.models.Video
 
 @RequiresApi(Build.VERSION_CODES.O)

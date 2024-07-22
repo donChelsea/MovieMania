@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.example.moviemania.ui.composables
+package com.example.moviemania.ui.composables.custom
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -15,10 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.ui.composables.cards.NowPlayingCard
 import com.google.accompanist.pager.HorizontalPagerIndicator
 
 @Composable
-fun MovieManiaPager(
+fun CustomPager(
     data: List<Movie>,
     modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
@@ -34,7 +35,7 @@ fun MovieManiaPager(
             modifier = Modifier.padding(bottom = 25.dp),
             contentPadding = PaddingValues(horizontal = 12.dp),
         ) { page ->
-            MovieManiaNowPlayingCard(movie = data[page], onClick = { onClick(data[page].id) })
+            NowPlayingCard(movie = data[page], onClick = { onClick(data[page].id) })
         }
         HorizontalPagerIndicator(
             modifier = Modifier

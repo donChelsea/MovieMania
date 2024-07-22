@@ -19,6 +19,7 @@ class WatchlistViewModel @Inject constructor(
     private val repository: WatchlistRepository,
 ) : MovieManiaViewModel<WatchlistUiState, WatchlistUiEvent, WatchlistUiAction>() {
     private val _state = MutableStateFlow(WatchlistUiState())
+
     override val state: StateFlow<WatchlistUiState>
         get() = _state.asStateFlow()
 
@@ -28,9 +29,6 @@ class WatchlistViewModel @Inject constructor(
 
     override fun handleAction(action: WatchlistUiAction) {
         when (action) {
-            WatchlistUiAction.OnNavigateBack -> viewModelScope.launch {
-                _events.emit(WatchlistUiEvent.OnNavigateBack)
-            }
             is WatchlistUiAction.OnMovieClicked -> viewModelScope.launch {
                 _events.emit(WatchlistUiEvent.OnMovieClicked(action.movieId))
             }

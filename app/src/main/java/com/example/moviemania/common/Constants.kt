@@ -1,4 +1,4 @@
-package com.example.moviemania.util
+package com.example.moviemania.common
 
 import com.example.moviemania.domain.models.Genre
 import com.example.moviemania.domain.models.Movie

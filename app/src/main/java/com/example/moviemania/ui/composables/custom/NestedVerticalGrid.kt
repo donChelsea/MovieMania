@@ -1,12 +1,13 @@
 @file:OptIn(ExperimentalLayoutApi::class)
 
-package com.example.moviemania.ui.composables
+package com.example.moviemania.ui.composables.custom
 
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.moviemania.domain.models.Genre
+import com.example.moviemania.ui.composables.cards.GridItemCard
 
 @Composable
 fun NestedVerticalGrid(
@@ -19,7 +20,7 @@ fun NestedVerticalGrid(
         maxItemsInEachRow = 4
     ) {
         data.forEach { genre ->
-            MovieManiaGridCard(genre)
+            GridItemCard(genre)
         }
     }
 }

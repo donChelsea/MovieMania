@@ -17,8 +17,4 @@ data class Movie(
     val releaseDate: String,
     val genres: List<Genre>?,
     val runtime: String?
-): Parcelable {
-
-    @IgnoredOnParcel
-    var isSaved = false
-}
+): Parcelable

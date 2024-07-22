@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.screens.empty
+package com.example.moviemania.ui.composables.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import com.example.moviemania.R
 
 @Composable
-fun ErrorScreen() {
+fun ShowError() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
@@ -27,8 +27,8 @@ fun ErrorScreen() {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PreviewErrorScreen() {
-    ErrorScreen()
+    ShowError()
 }
 

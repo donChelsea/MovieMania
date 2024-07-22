@@ -22,6 +22,7 @@ class HomeViewModel @Inject constructor(
     private val repository: MovieRepository,
 ) : MovieManiaViewModel<HomeUiState, HomeUiEvent, HomeUiAction>() {
     private val _state = MutableStateFlow(HomeUiState())
+
     override val state: StateFlow<HomeUiState>
         get() = _state.asStateFlow()
 
@@ -31,8 +32,7 @@ class HomeViewModel @Inject constructor(
 
     override fun handleAction(action: HomeUiAction) {
         when (action) {
-            HomeUiAction.GoToWatchlist -> viewModelScope.launch { _events.emit(HomeUiEvent.GoToWatchlist) }
-            is HomeUiAction.OnMovieClicked -> viewModelScope.launch { _events.emit(HomeUiEvent.OnMovieClicked(action.movieId)) }
+            is HomeUiAction.OnMovieClicked -> emitUiEvent(HomeUiEvent.OnMovieClicked(action.movieId))
         }
     }
 

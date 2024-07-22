@@ -3,12 +3,11 @@ package com.example.moviemania.ui.screens.details
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.moviemania.domain.models.Video
 import com.example.moviemania.domain.models.VideoItem
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.domain.repository.WatchlistRepository
-import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
 import com.example.moviemania.ui.MovieManiaViewModel
+import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,12 +23,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val movieRepository: MovieRepository,
     private val watchlistRepository: WatchlistRepository,
-    savedStateHandle: SavedStateHandle,
 ) : MovieManiaViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
-
     private val _state = MutableStateFlow(DetailsUiState())
+
     override val state: StateFlow<DetailsUiState>
         get() = _state.asStateFlow()
 
@@ -43,7 +42,6 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun handleAction(action: DetailsUiAction) {
         when (action) {
-            DetailsUiAction.OnNavigateBack -> viewModelScope.launch { _events.emit(DetailsUiEvent.OnNavigateBack) }
             is DetailsUiAction.OnSaveToWatchlist -> {
                 viewModelScope.launch {
                     watchlistRepository.getSavedMovies().collectLatest { saved ->
