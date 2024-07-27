@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.moviemania.R
+import com.example.moviemania.data.remote.MovieApi.Companion.MOVIE_IMAGE_URL
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.common.MOVIE_IMAGE_URL
 
 @Composable
 fun NowPlayingCard(

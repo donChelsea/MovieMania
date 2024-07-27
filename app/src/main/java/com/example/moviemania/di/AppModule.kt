@@ -4,12 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import com.example.moviemania.data.local.MovieDao
 import com.example.moviemania.data.local.MovieDatabase
-import com.example.moviemania.data.local.repository.WatchlistRepositoryImpl
 import com.example.moviemania.data.remote.MovieApi
-import com.example.moviemania.data.remote.repository.MovieRepositoryImpl
-import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.domain.repository.WatchlistRepository
-import com.example.moviemania.common.BASE_URL
+import com.example.moviemania.data.remote.MovieApi.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,12 +32,13 @@ fun CustomChipGroup(
                 Chip(
                     modifier = Modifier
                         .padding(horizontal = 4.dp),
-                    colors = ChipDefaults.chipColors(backgroundColor = Color.Blue),
+                    colors = ChipDefaults.chipColors(backgroundColor = MaterialTheme.colorScheme.primary),
                     onClick = {}
                 ) {
                     Text(
                         text = data[index],
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.ui.composables.cards.NowPlayingCard
+import com.example.moviemania.ui.theme.Purple80
 import com.google.accompanist.pager.HorizontalPagerIndicator
 
 @Composable
@@ -42,6 +44,7 @@ fun CustomPager(
                 .align(Alignment.BottomCenter),
             pageCount = data.size,
             pagerState = pagerState,
+            activeColor = MaterialTheme.colorScheme.primary
         )
     }
 }

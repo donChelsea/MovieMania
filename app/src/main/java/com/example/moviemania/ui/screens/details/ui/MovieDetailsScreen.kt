@@ -4,8 +4,10 @@ package com.example.moviemania.ui.screens.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -92,7 +95,7 @@ fun MovieDetailsContent(
 
             Text(
                 text = movie.title,
-                fontSize = 34.sp,
+                style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
@@ -102,28 +105,23 @@ fun MovieDetailsContent(
 
             Text(
                 text = "${movie.releaseDate} • ${movie.runtime.toString()}",
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 8.dp, bottom = 12.dp)
             )
 
-            Text(
-                text = movie.tagline,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, bottom = 12.dp)
-            )
-
-            Text(
-                text = movie.overview,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, bottom = 12.dp)
-            )
+            if (!movie.tagline.isNullOrEmpty()) {
+                Text(
+                    text = movie.tagline,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontStyle = FontStyle.Italic,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, bottom = 12.dp)
+                )
+            }
 
             movie.genres?.map { it.name }?.let { genres ->
                 CustomChipGroup(
@@ -131,6 +129,18 @@ fun MovieDetailsContent(
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = movie.overview,
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp)
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }

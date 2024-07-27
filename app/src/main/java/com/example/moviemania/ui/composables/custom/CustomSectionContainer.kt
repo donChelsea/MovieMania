@@ -31,9 +31,10 @@ fun CustomSectionContainer(
         Text(
             text = title,
             modifier = Modifier.padding(horizontal = 32.dp),
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
         )
-        Spacer(modifier = Modifier.height(44.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         content()
     }
