@@ -3,6 +3,7 @@
 package com.example.moviemania.ui.screens.details.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,25 +19,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.moviemania.common.mockMovie
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.domain.models.Video
-import com.example.moviemania.ui.composables.custom.CustomChipGroup
+import com.example.moviemania.ui.composables.bookmark.BookmarkButtonView
+import com.example.moviemania.ui.composables.bookmark.BookmarkState
 import com.example.moviemania.ui.composables.cards.DetailsCardLarge
+import com.example.moviemania.ui.composables.custom.CustomChipGroup
 import com.example.moviemania.ui.composables.screens.ShowError
 import com.example.moviemania.ui.composables.screens.ShowLoading
 import com.example.moviemania.ui.screens.details.DetailsUiAction
 import com.example.moviemania.ui.screens.details.DetailsUiState
 import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
 import com.example.moviemania.ui.screens.details.ScreenData
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun MovieDetailsScreen(
@@ -69,8 +79,8 @@ fun MovieDetailsLayout(
         is ScreenData.Data -> state.screenData.movie?.let {
             MovieDetailsContent(
                 movie = it,
-                isSaved = state.screenData.isSaved,
                 videos = state.screenData.videos,
+                bookmarkState = state.screenData.bookmarked,
                 onAction = onAction
             )
         }
@@ -81,9 +91,13 @@ fun MovieDetailsLayout(
 fun MovieDetailsContent(
     movie: Movie,
     videos: List<Video>,
-    isSaved: Boolean,
     onAction: (DetailsUiAction) -> Unit,
+    bookmarkState: BookmarkState,
 ) {
+    var bookmarked by rememberSaveable { mutableStateOf(bookmarkState == BookmarkState.Bookmarked) }
+    var toggling by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +105,29 @@ fun MovieDetailsContent(
             .verticalScroll(rememberScrollState())
     ) {
         movie.let { movie ->
-            DetailsCardLarge(movie = movie)
+            Box() {
+                DetailsCardLarge(movie = movie)
+
+                BookmarkButtonView(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp),
+                    state = when {
+                        toggling -> BookmarkState.Toggling
+                        bookmarked -> BookmarkState.Bookmarked
+                        else -> BookmarkState.NotBookmarked
+                    },
+                    onBookmarkClicked = {
+                        scope.launch {
+                            toggling = true
+                            delay(1.seconds)
+                            onAction(DetailsUiAction.OnUpdateWatchLater(movie, bookmarked))
+                            toggling = false
+                            bookmarked = !bookmarked
+                        }
+                    }
+                )
+            }
 
             Text(
                 text = movie.title,
@@ -148,5 +184,5 @@ fun MovieDetailsContent(
 @Preview
 @Composable
 private fun PreviewMovieDetailsContent() {
-    MovieDetailsContent(movie = mockMovie, isSaved = false, videos = emptyList(), onAction = {})
+    MovieDetailsContent(movie = mockMovie, videos = emptyList(), onAction = {}, bookmarkState = BookmarkState.NotBookmarked)
 }

@@ -1,23 +1,25 @@
-package com.example.moviemania.ui.screens.watchlist
+package com.example.moviemania.ui.screens.watch_later
 
 import androidx.compose.runtime.Immutable
 import com.example.moviemania.domain.models.Movie
 
 @Immutable
-data class WatchlistUiState(
+data class WatchLaterUiState(
     val screenData: ScreenData = ScreenData.Initial
 )
 
 @Immutable
-sealed class WatchlistUiEvent {
+sealed class WatchLaterUiEvent {
     @Immutable
-    data class OnMovieClicked(val movieId: Int): WatchlistUiEvent()
+    data class OnMovieClicked(val movieId: Int): WatchLaterUiEvent()
 }
 
 @Immutable
-sealed class WatchlistUiAction {
+sealed class WatchLaterUiAction {
     @Immutable
-    data class OnMovieClicked(val movieId: Int): WatchlistUiAction()
+    data class OnMovieClicked(val movieId: Int): WatchLaterUiAction()
+    @Immutable
+    data class onDeleteMovie(val movie: Movie): WatchLaterUiAction()
 }
 
 @Immutable

@@ -5,8 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.models.VideoItem
 import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.domain.repository.WatchlistRepository
+import com.example.moviemania.domain.repository.WatchLaterRepository
 import com.example.moviemania.ui.MovieManiaViewModel
+import com.example.moviemania.ui.composables.bookmark.BookmarkState
 import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val movieRepository: MovieRepository,
-    private val watchlistRepository: WatchlistRepository,
+    private val watchLaterRepository: WatchLaterRepository,
 ) : MovieManiaViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
     private val _state = MutableStateFlow(DetailsUiState())
 
@@ -35,6 +36,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val movieId = savedStateHandle[MovieId] ?: ""
     private val currentlyPlayingIndex = MutableStateFlow<Int?>(null)
     private val videoItems = MutableStateFlow<List<VideoItem>>(emptyList())
+    private var isBookmarked: BookmarkState = BookmarkState.NotBookmarked
 
     init {
         initData()
@@ -42,20 +44,16 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun handleAction(action: DetailsUiAction) {
         when (action) {
-            is DetailsUiAction.OnSaveToWatchlist -> {
+            is DetailsUiAction.OnUpdateWatchLater -> {
                 viewModelScope.launch {
-                    watchlistRepository.getSavedMovies().collectLatest { saved ->
-                        if (saved.isNotEmpty()) {
-                            saved.forEach {
-                                if (it.id == action.movie.id) {
-                                    watchlistRepository.deleteMovie(action.movie)
-                                    newUiState(ScreenData.Data(movie = action.movie, isSaved = false))
-                                } else {
-                                    watchlistRepository.saveMovie(action.movie)
-                                    newUiState(ScreenData.Data(movie = action.movie, isSaved = true))
-                                }
-                            }
-                        }
+                    if (action.bookmarked){
+                        watchLaterRepository.deleteMovie(action.movie)
+                        isBookmarked = BookmarkState.NotBookmarked
+                        newUiState(ScreenData.Data(movie = action.movie, bookmarked = isBookmarked))
+                    } else {
+                        watchLaterRepository.saveMovie(action.movie)
+                        isBookmarked = BookmarkState.Bookmarked
+                        newUiState(ScreenData.Data(movie = action.movie, bookmarked = isBookmarked))
                     }
                 }
             }
@@ -65,11 +63,17 @@ class MovieDetailsViewModel @Inject constructor(
     private fun initData() {
         viewModelScope.launch {
             combine(
+                watchLaterRepository.getSavedMovies(),
                 movieRepository.getMovieDetails(movieId = movieId),
                 movieRepository.getVideos(movieId = movieId)
-            ) { details, videos ->
+            ) { savedMovies, details, videos ->
+                savedMovies.forEach { savedMovie ->
+                    if (savedMovie.id.toString() == movieId) {
+                        isBookmarked = BookmarkState.Bookmarked
+                    }
+                }
                 if (details.data != null && videos.data?.isNotEmpty() == true) {
-                    ScreenData.Data(movie = details.data, videos = videos.data)
+                    ScreenData.Data(movie = details.data, videos = videos.data, bookmarked = isBookmarked)
                 } else {
                     ScreenData.Loading
                 }

@@ -1,4 +1,4 @@
-package com.example.moviemania.ui.screens.watchlist.ui
+package com.example.moviemania.ui.screens.watch_later.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,23 +15,23 @@ import com.example.moviemania.ui.composables.cards.ListItemCard
 import com.example.moviemania.ui.composables.screens.ShowError
 import com.example.moviemania.ui.composables.screens.ShowLoading
 import com.example.moviemania.ui.navigation.Screen
-import com.example.moviemania.ui.screens.watchlist.ScreenData
-import com.example.moviemania.ui.screens.watchlist.WatchlistUiAction
-import com.example.moviemania.ui.screens.watchlist.WatchlistUiEvent
-import com.example.moviemania.ui.screens.watchlist.WatchlistUiState
-import com.example.moviemania.ui.screens.watchlist.WatchlistViewModel
+import com.example.moviemania.ui.screens.watch_later.ScreenData
+import com.example.moviemania.ui.screens.watch_later.WatchLaterUiAction
+import com.example.moviemania.ui.screens.watch_later.WatchLaterUiEvent
+import com.example.moviemania.ui.screens.watch_later.WatchLaterUiState
+import com.example.moviemania.ui.screens.watch_later.WatchLaterViewModel
 
 @Composable
-fun WatchlistScreen(
+fun WatchLaterScreen(
     navController: NavController,
 ) {
-    val viewModel: WatchlistViewModel = hiltViewModel()
+    val viewModel: WatchLaterViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.events.collect { event ->
             when (event) {
-                is WatchlistUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
+                is WatchLaterUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
             }
         }
     }
@@ -44,8 +44,8 @@ fun WatchlistScreen(
 
 @Composable
 fun WatchlistLayout(
-    state: WatchlistUiState,
-    onAction: (WatchlistUiAction) -> Unit,
+    state: WatchLaterUiState,
+    onAction: (WatchLaterUiAction) -> Unit,
 ) {
     when (state.screenData) {
         ScreenData.Initial -> {}
@@ -62,13 +62,14 @@ fun WatchlistLayout(
 @Composable
 fun WatchlistContent(
     movies: List<Movie>,
-    onAction: (WatchlistUiAction) -> Unit,
+    onAction: (WatchLaterUiAction) -> Unit,
 ) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(movies) { movie ->
             ListItemCard(
                 movie = movie,
-                onClick = { onAction(WatchlistUiAction.OnMovieClicked(it)) }
+                onClick = { onAction(WatchLaterUiAction.OnMovieClicked(it)) },
+                onDelete = { onAction(WatchLaterUiAction.onDeleteMovie(it)) }
             )
         }
     }

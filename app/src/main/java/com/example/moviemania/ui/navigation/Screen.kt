@@ -2,7 +2,7 @@ package com.example.moviemania.ui.navigation
 
 sealed class Screen(val route: String, val name: String) {
     object Home: Screen("home", "Home")
-    object WatchList: Screen("watchlist", "Watchlist")
+    object WatchLater: Screen("watchLater", "Watch Later")
     object MovieDetails: Screen("movieDetails", "Details")
 
     object MovieDetailArgs {

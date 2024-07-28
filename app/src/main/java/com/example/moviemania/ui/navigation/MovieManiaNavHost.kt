@@ -25,7 +25,7 @@ import com.example.moviemania.R
 import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
 import com.example.moviemania.ui.screens.details.ui.MovieDetailsScreen
 import com.example.moviemania.ui.screens.home.ui.HomeScreen
-import com.example.moviemania.ui.screens.watchlist.ui.WatchlistScreen
+import com.example.moviemania.ui.screens.watch_later.ui.WatchLaterScreen
 
 @Composable
 fun MovieManiaNavHost() {
@@ -40,8 +40,10 @@ fun MovieManiaNavHost() {
                 canNavigateBack = canNavigateBack,
                 navigateUp = { navController.popBackStack() },
                 actions = {
-                    IconButton(onClick = { navController.navigate(Screen.WatchList.route) }) {
-                        Icon(Icons.Outlined.List, stringResource(id = R.string.content_description_go_to_watch_list))
+                    if (title != Screen.WatchLater.name) {
+                        IconButton(onClick = { navController.navigate(Screen.WatchLater.route) }) {
+                            Icon(Icons.Outlined.List, stringResource(id = R.string.content_description_go_to_watch_list))
+                        }
                     }
                 }
             )
@@ -56,9 +58,9 @@ fun MovieManiaNavHost() {
                 HomeScreen(navController = navController)
                 title = Screen.Home.name
             }
-            composable(route = Screen.WatchList.route) {
-                WatchlistScreen(navController = navController)
-                title = Screen.WatchList.name
+            composable(route = Screen.WatchLater.route) {
+                WatchLaterScreen(navController = navController)
+                title = Screen.WatchLater.name
             }
             composable(
                 route = Screen.MovieDetails.route + "/{$MovieId}",

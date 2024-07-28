@@ -1,8 +1,8 @@
-package com.example.moviemania.ui.screens.watchlist
+package com.example.moviemania.ui.screens.watch_later
 
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.repository.WatchlistRepository
+import com.example.moviemania.domain.repository.WatchLaterRepository
 import com.example.moviemania.ui.MovieManiaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,23 +15,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WatchlistViewModel @Inject constructor(
-    private val repository: WatchlistRepository,
-) : MovieManiaViewModel<WatchlistUiState, WatchlistUiEvent, WatchlistUiAction>() {
-    private val _state = MutableStateFlow(WatchlistUiState())
+class WatchLaterViewModel @Inject constructor(
+    private val repository: WatchLaterRepository,
+) : MovieManiaViewModel<WatchLaterUiState, WatchLaterUiEvent, WatchLaterUiAction>() {
+    private val _state = MutableStateFlow(WatchLaterUiState())
 
-    override val state: StateFlow<WatchlistUiState>
+    override val state: StateFlow<WatchLaterUiState>
         get() = _state.asStateFlow()
 
     init {
         initData()
     }
 
-    override fun handleAction(action: WatchlistUiAction) {
+    override fun handleAction(action: WatchLaterUiAction) {
         when (action) {
-            is WatchlistUiAction.OnMovieClicked -> viewModelScope.launch {
-                _events.emit(WatchlistUiEvent.OnMovieClicked(action.movieId))
+            is WatchLaterUiAction.OnMovieClicked -> viewModelScope.launch {
+                _events.emit(WatchLaterUiEvent.OnMovieClicked(action.movieId))
             }
+            is WatchLaterUiAction.onDeleteMovie -> deleteMovie(action.movie)
         }
     }
 
@@ -40,12 +41,6 @@ class WatchlistViewModel @Inject constructor(
             repository.getSavedMovies().collectLatest { movies ->
                 newUiState(ScreenData.Data(movies))
             }
-        }
-    }
-
-    private fun saveMovie(movie: Movie) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.saveMovie(movie)
         }
     }
 

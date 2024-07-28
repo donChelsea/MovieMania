@@ -4,16 +4,16 @@ import com.example.moviemania.data.local.MovieDao
 import com.example.moviemania.data.local.mappers.toDomain
 import com.example.moviemania.data.local.mappers.toEntity
 import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.repository.WatchlistRepository
+import com.example.moviemania.domain.repository.WatchLaterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchlistRepositoryImpl @Inject constructor(
+class WatchLaterRepositoryImpl @Inject constructor(
     private val dao: MovieDao
-): WatchlistRepository {
+): WatchLaterRepository {
     override suspend fun saveMovie(movie: Movie) {
         return dao.saveMovie(movie.toEntity())
     }
