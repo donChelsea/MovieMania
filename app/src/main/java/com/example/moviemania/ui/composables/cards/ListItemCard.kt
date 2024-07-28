@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -61,6 +62,9 @@ fun ListItemCard(
                 .height(250.dp)
                 .clip(RectangleShape)
                 .clickable { onClick(movie.id) },
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Gray
+            ),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = R.dimen.card_elevation.dp
             ),
@@ -99,7 +103,7 @@ fun ListItemCard(
                         color = MaterialTheme.colors.onPrimary,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 12.dp)
+                            .padding(vertical = 12.dp)
                     )
                 }
             }

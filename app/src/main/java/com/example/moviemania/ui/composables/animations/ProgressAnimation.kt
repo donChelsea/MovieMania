@@ -14,17 +14,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
+@Preview()
 @Composable
 fun ProgressAnimation() {
     val dots = listOf(
@@ -69,7 +71,10 @@ fun ProgressAnimation() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(color = Color.White, shape = CircleShape)
+                        .background(
+                            color = MaterialTheme.colors.primaryVariant,
+                            shape = CircleShape
+                        )
                 )
             }
 
