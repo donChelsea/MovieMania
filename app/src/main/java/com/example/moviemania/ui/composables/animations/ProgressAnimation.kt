@@ -43,11 +43,11 @@ fun ProgressAnimation() {
             animatable.animateTo(
                 targetValue = 1f, animationSpec = infiniteRepeatable(
                     animation = keyframes {
-                        durationMillis = 2000
+                        durationMillis = 1000
                         0.0f at 0 with LinearOutSlowInEasing // for 0-15 ms
                         1.0f at 200 with LinearOutSlowInEasing // for 15-75 ms
                         0.0f at 400 with LinearOutSlowInEasing // for 0-15 ms
-                        0.0f at 2000
+                        0.0f at 1000
                     },
                     repeatMode = RepeatMode.Restart,
                 )
