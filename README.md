@@ -21,6 +21,7 @@
         <li><a href="https://square.github.io/picasso/">Picasso</a></li>
         <li><a href="https://github.com/google/accompanist">Accompanist</a></li>
         <li><a href="https://developer.android.com/training/data-storage/room">Room</a></li>
+        <li><a href="https://github.com/PierfrancescoSoffritti/android-youtube-player">Android Youtube Player</a></li>
       </p>
     </ul>
 
@@ -32,6 +33,7 @@
         <li>Carousels for more information in a smaller view</li>
         <li>Navigation between screens</li>
         <li>Room database for persistent caching</li>
+        <li>Video capability</li>
         <li>Dagger/Hilt for easy dependency injection</li>
         <li>Single activity application</li>
         <li>Screen state updates</li>
