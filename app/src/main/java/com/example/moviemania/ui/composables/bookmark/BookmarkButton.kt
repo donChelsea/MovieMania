@@ -1,14 +1,15 @@
 package com.example.moviemania.ui.composables.bookmark
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,32 +21,33 @@ fun BookmarkButtonView(
     modifier: Modifier = Modifier,
     onBookmarkClicked: () -> Unit,
 ) {
-    OutlinedButton(
+    SmallFloatingActionButton(
         modifier = modifier,
         onClick = onBookmarkClicked,
-        colors = ButtonDefaults.outlinedButtonColors(
-            backgroundColor = MaterialTheme.colors.primaryVariant,
-            contentColor = Color.White
-        ),
-        enabled = state != BookmarkState.Toggling,
+        containerColor = MaterialTheme.colors.primaryVariant,
+        elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 10.dp),
         content = {
             when (state) {
                 BookmarkState.Toggling -> CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    strokeWidth = 2.dp
+                    strokeWidth = 2.dp,
+                    color = Color.White
                 )
 
                 BookmarkState.Bookmarked -> Icon(
                     imageVector = Icons.Filled.Bookmark,
-                    contentDescription = ""
+                    contentDescription = "",
+                    tint = Color.White
                 )
 
                 BookmarkState.NotBookmarked -> Icon(
                     imageVector = Icons.Outlined.BookmarkAdd,
-                    contentDescription = ""
+                    contentDescription = "",
+                    tint = Color.White
                 )
             }
-        })
+        }
+    )
 }
 
 sealed interface BookmarkState {

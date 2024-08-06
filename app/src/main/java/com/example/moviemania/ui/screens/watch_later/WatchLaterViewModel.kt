@@ -39,7 +39,7 @@ class WatchLaterViewModel @Inject constructor(
     private fun initData() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getSavedMovies().collectLatest { movies ->
-                newUiState(ScreenData.Data(movies))
+                newUiState(ScreenData.Data(movies.asReversed()))
             }
         }
     }
