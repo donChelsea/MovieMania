@@ -3,7 +3,6 @@ package com.example.moviemania.ui.screens.details
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.moviemania.domain.models.VideoItem
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.domain.repository.WatchLaterRepository
 import com.example.moviemania.ui.MovieManiaViewModel
@@ -34,8 +33,6 @@ class MovieDetailsViewModel @Inject constructor(
         get() = _state.asStateFlow()
 
     private val movieId = savedStateHandle[MovieId] ?: ""
-    private val currentlyPlayingIndex = MutableStateFlow<Int?>(null)
-    private val videoItems = MutableStateFlow<List<VideoItem>>(emptyList())
     private var isBookmarked: BookmarkState = BookmarkState.NotBookmarked
 
     init {
@@ -46,7 +43,7 @@ class MovieDetailsViewModel @Inject constructor(
         when (action) {
             is DetailsUiAction.OnUpdateWatchLater -> {
                 viewModelScope.launch {
-                    if (action.bookmarked){
+                    if (action.bookmarked) {
                         watchLaterRepository.deleteMovie(action.movie)
                         isBookmarked = BookmarkState.NotBookmarked
                         newUiState(ScreenData.Data(movie = action.movie, bookmarked = isBookmarked))
@@ -72,8 +69,11 @@ class MovieDetailsViewModel @Inject constructor(
                         isBookmarked = BookmarkState.Bookmarked
                     }
                 }
-                if (details.data != null && videos.data?.isNotEmpty() == true) {
-                    ScreenData.Data(movie = details.data, videos = videos.data, bookmarked = isBookmarked)
+                if (details.data != null) {
+                    val trailer = videos.data?.first {
+                        (it.type == "Teaser" || it.type == "Clip") && it.site == "YouTube"
+                    }
+                    ScreenData.Data(movie = details.data, trailer = trailer, bookmarked = isBookmarked)
                 } else {
                     ScreenData.Loading
                 }
@@ -84,25 +84,6 @@ class MovieDetailsViewModel @Inject constructor(
                     newUiState(ScreenData.Error)
                 }
                 .collectLatest { screenData -> newUiState(screenData) }
-        }
-    }
-
-    fun onPlayVideoClick(playbackPosition: Long, videoIndex: Int) {
-        when (currentlyPlayingIndex.value) {
-            null -> currentlyPlayingIndex.value = videoIndex
-            videoIndex -> {
-                currentlyPlayingIndex.value = null
-                videoItems.value = videoItems.value.toMutableList().also { list ->
-                    list[videoIndex] = list[videoIndex].copy(lastPlayedPosition = playbackPosition)
-                }
-            }
-
-            else -> {
-                videoItems.value = videoItems.value.toMutableList().also { list ->
-                    list[currentlyPlayingIndex.value!!] = list[currentlyPlayingIndex.value!!].copy(lastPlayedPosition = playbackPosition)
-                }
-                currentlyPlayingIndex.value = videoIndex
-            }
         }
     }
 

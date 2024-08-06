@@ -25,18 +25,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.moviemania.R
 import com.example.moviemania.common.mockMovie
 import com.example.moviemania.domain.models.Movie
 import com.example.moviemania.domain.models.Video
 import com.example.moviemania.ui.composables.bookmark.BookmarkButtonView
 import com.example.moviemania.ui.composables.bookmark.BookmarkState
 import com.example.moviemania.ui.composables.cards.DetailsCardLarge
+import com.example.moviemania.ui.composables.cards.YoutubePlayerCard
 import com.example.moviemania.ui.composables.custom.CustomChipGroup
 import com.example.moviemania.ui.composables.screens.ShowError
 import com.example.moviemania.ui.composables.screens.ShowLoading
@@ -79,7 +83,7 @@ fun MovieDetailsLayout(
         is ScreenData.Data -> state.screenData.movie?.let {
             MovieDetailsContent(
                 movie = it,
-                videos = state.screenData.videos,
+                trailer = state.screenData.trailer,
                 bookmarkState = state.screenData.bookmarked,
                 onAction = onAction
             )
@@ -90,7 +94,7 @@ fun MovieDetailsLayout(
 @Composable
 fun MovieDetailsContent(
     movie: Movie,
-    videos: List<Video>,
+    trailer: Video?,
     onAction: (DetailsUiAction) -> Unit,
     bookmarkState: BookmarkState,
 ) {
@@ -105,7 +109,7 @@ fun MovieDetailsContent(
             .verticalScroll(rememberScrollState())
     ) {
         movie.let { movie ->
-            Box() {
+            Box {
                 DetailsCardLarge(movie = movie)
 
                 BookmarkButtonView(
@@ -177,6 +181,25 @@ fun MovieDetailsContent(
             )
 
             Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = stringResource(id = R.string.trailers_and_more),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp, start = 8.dp)
+            )
+
+            trailer?.let {
+                YoutubePlayerCard(
+                    video = it,
+                    lifecycleOwner = LocalLifecycleOwner.current
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
@@ -184,5 +207,16 @@ fun MovieDetailsContent(
 @Preview
 @Composable
 private fun PreviewMovieDetailsContent() {
-    MovieDetailsContent(movie = mockMovie, videos = emptyList(), onAction = {}, bookmarkState = BookmarkState.NotBookmarked)
+    MovieDetailsContent(
+        movie = mockMovie,
+        trailer = Video(
+            id = "1",
+            name = "name",
+            type = "Trailer",
+            site = "Youtube",
+            key = ""
+        ),
+        onAction = {},
+        bookmarkState = BookmarkState.NotBookmarked
+    )
 }

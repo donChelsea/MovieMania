@@ -30,7 +30,7 @@ sealed class ScreenData {
     @Immutable
     data class Data(
         val movie: Movie? = null,
-        val videos: List<Video> = emptyList(),
+        val trailer: Video? = null,
         val bookmarked: BookmarkState = BookmarkState.NotBookmarked,
     ) : ScreenData()
 }

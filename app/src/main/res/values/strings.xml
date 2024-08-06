@@ -16,4 +16,5 @@
     <string name="bookmark">Bookmark</string>
     <string name="remove">Remove</string>
     <string name="close">Close</string>
+    <string name="trailers_and_more"><![CDATA[Trailers & More]]></string>
 </resources>
