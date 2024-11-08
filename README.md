@@ -1,9 +1,10 @@
 <h1>MovieMania</h1>
 
-<img src="https://github.com/user-attachments/assets/79849b38-acd6-4d05-ad9f-a8e1b7f63ca8" width="200dp" height="450dp"> <img src="https://github.com/user-attachments/assets/7544233d-7c58-4c60-993b-95e0b7b2cf73" width="200dp" height="450dp"> <img src="https://github.com/user-attachments/assets/d2b17dcd-e714-469f-98b9-ba21bd6ef695" width="200dp" height="450dp">
+<img src="https://github.com/user-attachments/assets/6f971885-5226-4c10-b2cd-f3b1fa0a282b" width="200dp" height="450dp"> <img src="https://github.com/user-attachments/assets/68263a0e-8ea5-452f-bd58-4a09f6f220ef" width="200dp" height="450dp"> <img src="https://github.com/user-attachments/assets/c97e1756-61cd-4abc-8153-3a4048e3adc9" width="200dp" height="450dp">
 
 <p>Discover and explore new movies for your utmost entertainment!</p>
 <p>API: <a href="https://developer.themoviedb.org/docs/getting-started">The Movie DB</a> </p>
+
 
 
 <h3>
