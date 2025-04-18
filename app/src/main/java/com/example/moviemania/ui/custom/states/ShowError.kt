@@ -13,13 +13,16 @@ import androidx.compose.ui.unit.sp
 import com.example.moviemania.R
 
 @Composable
-fun ShowError() {
+fun ShowError(
+    message: String = stringResource(id = R.string.error_screen),
+    modifier: Modifier = Modifier,
+) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
-            text = stringResource(id = R.string.error_screen),
+            text = message,
             textAlign = TextAlign.Center,
             fontSize = 24.sp
         )

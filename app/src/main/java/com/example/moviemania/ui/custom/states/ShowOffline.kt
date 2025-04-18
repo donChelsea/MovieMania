@@ -13,10 +13,12 @@ import androidx.compose.ui.unit.sp
 import com.example.moviemania.R
 
 @Composable
-fun ShowOffline() {
+fun ShowOffline(
+    modifier: Modifier = Modifier,
+) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = stringResource(id = R.string.offline_screen),

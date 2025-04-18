@@ -44,25 +44,25 @@ import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
 import com.example.moviemania.ui.screens.details.DetailsUiAction
 import com.example.moviemania.ui.screens.details.DetailsUiState
-import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
+import com.example.moviemania.ui.screens.details.DetailsViewModel
 import com.example.moviemania.ui.screens.details.ScreenData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
-fun MovieDetailsScreen() {
-    val viewModel: MovieDetailsViewModel = hiltViewModel()
+fun DetailsScreen() {
+    val viewModel: DetailsViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    MovieDetailsLayout(
+    DetailsLayout(
         state = state,
         onAction = viewModel::handleAction
     )
 }
 
 @Composable
-fun MovieDetailsLayout(
+fun DetailsLayout(
     state: DetailsUiState,
     onAction: (DetailsUiAction) -> Unit,
 ) {
@@ -71,7 +71,7 @@ fun MovieDetailsLayout(
         ScreenData.Error -> ShowError()
         ScreenData.Loading -> ShowLoading()
         is ScreenData.Data -> state.screenData.movieUiModel?.let {
-            MovieDetailsContent(
+            DetailsContent(
                 movieUiModel = it,
                 trailer = state.screenData.trailer,
                 bookmarkState = state.screenData.bookmarked,
@@ -82,7 +82,7 @@ fun MovieDetailsLayout(
 }
 
 @Composable
-fun MovieDetailsContent(
+fun DetailsContent(
     movieUiModel: MovieUiModel,
     trailer: VideoUiModel?,
     onAction: (DetailsUiAction) -> Unit,
@@ -196,8 +196,8 @@ fun MovieDetailsContent(
 
 @Preview
 @Composable
-private fun PreviewMovieDetailsContent() {
-    MovieDetailsContent(
+private fun PreviewDetailsContent() {
+    DetailsContent(
         movieUiModel = mockMovieUiModel,
         trailer = VideoUiModel(
             id = "1",

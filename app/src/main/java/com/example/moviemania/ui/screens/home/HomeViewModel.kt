@@ -1,6 +1,5 @@
 package com.example.moviemania.ui.screens.home
 
-import android.util.Log
 import com.example.moviemania.data.ConnectionManager
 import com.example.moviemania.domain.use_case.GetNowPlayingUseCase
 import com.example.moviemania.domain.use_case.GetTrendingUseCase
@@ -63,8 +62,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
                 .catch { t ->
-                    Log.e(TAG, "Error: ${t.message.toString()}")
-                    newUiState(ScreenData.Error)
+                    newUiState(ScreenData.Error(t.message.orEmpty()))
                 }
                 .collectLatest { screenData ->
                     newUiState(screenData)

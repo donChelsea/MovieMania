@@ -9,10 +9,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.moviemania.ui.custom.animations.ProgressAnimation
 
 @Composable
-fun ShowLoading() {
+fun ShowLoading(
+    modifier: Modifier = Modifier,
+) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         ProgressAnimation()
     }

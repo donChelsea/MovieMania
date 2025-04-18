@@ -61,8 +61,8 @@ fun HomeLayout(
     when (state.screenData) {
         ScreenData.Initial -> {}
         ScreenData.Offline -> ShowOffline()
-        ScreenData.Error -> ShowError()
         ScreenData.Loading -> ShowLoading()
+        is ScreenData.Error -> ShowError(message = state.screenData.message)
         is ScreenData.Data -> HomeContent(
             trending = state.screenData.trending,
             nowPlaying = state.screenData.nowPlaying,

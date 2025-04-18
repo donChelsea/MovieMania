@@ -23,7 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.moviemania.R
 import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MOVIE_ID
-import com.example.moviemania.ui.screens.details.ui.MovieDetailsScreen
+import com.example.moviemania.ui.screens.details.ui.DetailsScreen
 import com.example.moviemania.ui.screens.home.ui.HomeScreen
 import com.example.moviemania.ui.screens.watch_later.ui.WatchLaterScreen
 
@@ -70,7 +70,7 @@ fun MovieManiaNavHost() {
                     }
                 )
             ) {
-                MovieDetailsScreen()
+                DetailsScreen()
                 title = Screen.MovieDetails.name
             }
         }

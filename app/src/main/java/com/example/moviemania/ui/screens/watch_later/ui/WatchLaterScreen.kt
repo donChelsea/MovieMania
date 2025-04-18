@@ -14,6 +14,7 @@ import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.custom.cards.ListCard
 import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
+import com.example.moviemania.ui.custom.states.ShowOffline
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.watch_later.ScreenData
 import com.example.moviemania.ui.screens.watch_later.WatchLaterUiAction
@@ -49,8 +50,9 @@ fun WatchlistLayout(
 ) {
     when (state.screenData) {
         ScreenData.Initial -> {}
-        ScreenData.Error -> ShowError()
+        ScreenData.Offline -> ShowOffline()
         ScreenData.Loading -> ShowLoading()
+        is ScreenData.Error -> ShowError(message = state.screenData.message)
         is ScreenData.Data -> WatchlistContent(
             movies = state.screenData.movies,
             onAction = onAction
