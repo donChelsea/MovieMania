@@ -24,15 +24,15 @@ android {
     }
   }
 
-  def apikeyPropertiesFile = rootProject.file("local.properties")
-  def apikeyProperties = new Properties()
-  apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+  def localPropertiesFile = rootProject.file("local.properties")
+  def localProperties = new Properties()
+  localProperties.load(new FileInputStream(localPropertiesFile))
 
   buildTypes {
     debug {
       buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
       buildConfigField("String", "IMAGES_BASE_URL", "\"https://image.tmdb.org/t/p/w500/\"")
-      buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
+      buildConfigField("String", "API_KEY", localProperties['API_KEY'])
     }
     release {
       minifyEnabled false
