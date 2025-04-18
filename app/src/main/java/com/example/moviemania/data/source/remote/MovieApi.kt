@@ -1,8 +1,8 @@
-package com.example.moviemania.data.remote
+package com.example.moviemania.data.source.remote
 
-import com.example.moviemania.data.remote.model.ApiListResultDto
-import com.example.moviemania.data.remote.model.MovieDto
-import com.example.moviemania.data.remote.model.VideoDto
+import com.example.moviemania.data.source.remote.model.ApiListResultDto
+import com.example.moviemania.data.source.remote.model.MovieDto
+import com.example.moviemania.data.source.remote.model.VideoDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

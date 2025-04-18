@@ -1,4 +1,4 @@
-package com.example.moviemania.data.remote.model
+package com.example.moviemania.data.source.remote.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi

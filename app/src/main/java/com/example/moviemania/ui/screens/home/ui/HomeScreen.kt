@@ -24,6 +24,7 @@ import com.example.moviemania.ui.custom.cards.CarouselCard
 import com.example.moviemania.ui.custom.groups.CustomSectionContainer
 import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
+import com.example.moviemania.ui.custom.states.ShowOffline
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.home.HomeUiAction
 import com.example.moviemania.ui.screens.home.HomeUiEvent
@@ -59,6 +60,7 @@ fun HomeLayout(
 ) {
     when (state.screenData) {
         ScreenData.Initial -> {}
+        ScreenData.Offline -> ShowOffline()
         ScreenData.Error -> ShowError()
         ScreenData.Loading -> ShowLoading()
         is ScreenData.Data -> HomeContent(

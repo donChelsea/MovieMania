@@ -1,18 +1,18 @@
-package com.example.moviemania.data.local.repository
+package com.example.moviemania.data.source.local.repository
 
-import com.example.moviemania.data.local.MovieDao
-import com.example.moviemania.data.local.model.MovieEntity
+import com.example.moviemania.data.source.local.MovieDao
+import com.example.moviemania.data.source.local.model.MovieEntity
 import com.example.moviemania.domain.model.Movie
-import com.example.moviemania.domain.repository.WatchLaterRepository
+import com.example.moviemania.domain.repository.LocalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchLaterRepositoryImpl @Inject constructor(
+class LocalRepositoryImpl @Inject constructor(
     private val dao: MovieDao
-): WatchLaterRepository {
+): LocalRepository {
     override suspend fun saveMovie(movie: MovieEntity) {
         return dao.saveMovie(movie)
     }

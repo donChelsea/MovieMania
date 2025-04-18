@@ -2,8 +2,11 @@ package com.example.moviemania.ui.screens.details
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.domain.repository.WatchLaterRepository
+import com.example.moviemania.domain.use_case.DeleteMovieUseCase
+import com.example.moviemania.domain.use_case.GetMovieDetailsUseCase
+import com.example.moviemania.domain.use_case.GetSavedMoviesUseCase
+import com.example.moviemania.domain.use_case.GetVideosUseCase
+import com.example.moviemania.domain.use_case.SaveMovieUseCase
 import com.example.moviemania.ui.common.BaseViewModel
 import com.example.moviemania.ui.custom.bookmark.BookmarkState
 import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MOVIE_ID
@@ -22,8 +25,11 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val movieRepository: MovieRepository,
-    private val watchLaterRepository: WatchLaterRepository,
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getVideosUseCase: GetVideosUseCase,
+    private val deleteMovieUseCase: DeleteMovieUseCase,
+    private val getSavedMoviesUseCase: GetSavedMoviesUseCase,
+    private val saveMovieUseCase: SaveMovieUseCase,
 ) : BaseViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
     private val _state = MutableStateFlow(DetailsUiState())
 
@@ -42,11 +48,11 @@ class MovieDetailsViewModel @Inject constructor(
             is DetailsUiAction.OnUpdateWatchLater -> {
                 safeLaunch {
                     if (action.bookmarked) {
-                        watchLaterRepository.deleteMovie(action.movieUiModel.toEntity())
+                        deleteMovieUseCase(action.movieUiModel.toEntity())
                         isBookmarked = BookmarkState.NotBookmarked
                         newUiState(ScreenData.Data(movieUiModel = action.movieUiModel, bookmarked = isBookmarked))
                     } else {
-                        watchLaterRepository.saveMovie(action.movieUiModel.toEntity())
+                        saveMovieUseCase(action.movieUiModel.toEntity())
                         isBookmarked = BookmarkState.Bookmarked
                         newUiState(ScreenData.Data(movieUiModel = action.movieUiModel, bookmarked = isBookmarked))
                     }
@@ -58,9 +64,9 @@ class MovieDetailsViewModel @Inject constructor(
     private fun initData() {
         safeLaunch {
             combine(
-                watchLaterRepository.getSavedMovies(),
-                movieRepository.getMovieDetails(movieId = movieId),
-                movieRepository.getVideos(movieId = movieId)
+                getSavedMoviesUseCase(),
+                getMovieDetailsUseCase(movieId = movieId),
+                getVideosUseCase(movieId = movieId)
             ) { savedMovies, details, videos ->
                 savedMovies.forEach { savedMovie ->
                     if (savedMovie.id.toString() == movieId) {

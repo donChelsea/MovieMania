@@ -1,11 +1,11 @@
-package com.example.moviemania.data.local
+package com.example.moviemania.data.source.local
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.moviemania.data.local.model.MovieEntity
+import com.example.moviemania.data.source.local.model.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

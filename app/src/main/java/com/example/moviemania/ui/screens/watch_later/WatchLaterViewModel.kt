@@ -1,8 +1,9 @@
 package com.example.moviemania.ui.screens.watch_later
 
-import com.example.moviemania.ui.model.MovieUiModel
-import com.example.moviemania.domain.repository.WatchLaterRepository
+import com.example.moviemania.domain.use_case.DeleteMovieUseCase
+import com.example.moviemania.domain.use_case.GetSavedMoviesUseCase
 import com.example.moviemania.ui.common.BaseViewModel
+import com.example.moviemania.ui.model.MovieUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WatchLaterViewModel @Inject constructor(
-    private val repository: WatchLaterRepository,
+    private val getSavedMoviesUseCase: GetSavedMoviesUseCase,
+    private val deleteMovieUseCase: DeleteMovieUseCase,
 ) : BaseViewModel<WatchLaterUiState, WatchLaterUiEvent, WatchLaterUiAction>() {
     private val _state = MutableStateFlow(WatchLaterUiState())
 
@@ -35,7 +37,7 @@ class WatchLaterViewModel @Inject constructor(
 
     private fun initData() {
         safeLaunch {
-            repository.getSavedMovies().collectLatest { movies ->
+            getSavedMoviesUseCase().collectLatest { movies ->
                 newUiState(ScreenData.Data(movies.map { it.toUiModel() }.asReversed()))
             }
         }
@@ -43,7 +45,7 @@ class WatchLaterViewModel @Inject constructor(
 
     private fun deleteMovie(movie: MovieUiModel) {
         safeLaunch {
-            repository.deleteMovie(movie.toEntity())
+            deleteMovieUseCase(movie.toEntity())
         }
     }
 

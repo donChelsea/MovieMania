@@ -1,7 +1,7 @@
 package com.example.moviemania.ui.model
 
 import android.os.Parcelable
-import com.example.moviemania.data.local.model.MovieEntity
+import com.example.moviemania.data.source.local.model.MovieEntity
 import com.example.moviemania.domain.model.Genre
 import kotlinx.parcelize.Parcelize
 import javax.annotation.concurrent.Immutable

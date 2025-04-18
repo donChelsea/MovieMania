@@ -3,10 +3,11 @@ package com.example.moviemania.data.di
 import android.content.Context
 import androidx.room.Room
 import com.example.moviemania.BuildConfig
-import com.example.moviemania.data.local.MovieDao
-import com.example.moviemania.data.local.MovieDatabase
-import com.example.moviemania.data.remote.MovieApi
-import com.example.moviemania.data.remote.interceptor.ApiKeyInterceptor
+import com.example.moviemania.data.ConnectionManager
+import com.example.moviemania.data.source.local.MovieDao
+import com.example.moviemania.data.source.local.MovieDatabase
+import com.example.moviemania.data.source.remote.MovieApi
+import com.example.moviemania.data.source.remote.interceptor.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,4 +61,10 @@ object DataModule {
     fun provideMovieDao(
         database: MovieDatabase
     ): MovieDao = database.dao()
+
+    @Provides
+    @Singleton
+    fun provideConnectionManager(
+        @ApplicationContext context: Context,
+    ): ConnectionManager = ConnectionManager(context)
 }

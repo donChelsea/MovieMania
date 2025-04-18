@@ -5,7 +5,7 @@ import com.example.moviemania.domain.model.Movie
 import com.example.moviemania.domain.model.Video
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
+interface RemoteRepository {
     suspend fun getTrending(): Flow<Resource<List<Movie>>>
     suspend fun getNowPlaying(): Flow<Resource<List<Movie>>>
     suspend fun getUpcoming(): Flow<Resource<List<Movie>>>

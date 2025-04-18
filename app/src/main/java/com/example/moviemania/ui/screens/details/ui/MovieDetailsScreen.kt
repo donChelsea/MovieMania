@@ -142,7 +142,7 @@ fun MovieDetailsContent(
                     .padding(start = 8.dp, bottom = 12.dp)
             )
 
-            if (!movie.tagline.isNullOrEmpty()) {
+            if (movie.tagline.isNotEmpty()) {
                 Text(
                     text = movie.tagline,
                     style = MaterialTheme.typography.titleLarge,

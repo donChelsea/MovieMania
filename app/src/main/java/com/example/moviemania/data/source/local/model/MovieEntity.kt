@@ -1,4 +1,4 @@
-package com.example.moviemania.data.local.model
+package com.example.moviemania.data.source.local.model
 
 import android.os.Parcelable
 import androidx.annotation.NonNull

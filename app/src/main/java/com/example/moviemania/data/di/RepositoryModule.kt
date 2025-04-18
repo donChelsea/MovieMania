@@ -1,9 +1,9 @@
 package com.example.moviemania.data.di
 
-import com.example.moviemania.data.local.repository.WatchLaterRepositoryImpl
-import com.example.moviemania.data.remote.repository.MovieRepositoryImpl
-import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.domain.repository.WatchLaterRepository
+import com.example.moviemania.data.source.local.repository.LocalRepositoryImpl
+import com.example.moviemania.data.source.remote.repository.RemoteRepositoryImpl
+import com.example.moviemania.domain.repository.RemoteRepository
+import com.example.moviemania.domain.repository.LocalRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,9 +16,9 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+    abstract fun bindMovieRepository(movieRepositoryImpl: RemoteRepositoryImpl): RemoteRepository
 
     @Binds
     @Singleton
-    abstract fun bindWatchlistRepository(watchlistRepository: WatchLaterRepositoryImpl): WatchLaterRepository
+    abstract fun bindWatchlistRepository(watchlistRepository: LocalRepositoryImpl): LocalRepository
 }

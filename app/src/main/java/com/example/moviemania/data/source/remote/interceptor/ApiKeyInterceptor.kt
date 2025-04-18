@@ -1,4 +1,4 @@
-package com.example.moviemania.data.remote.interceptor
+package com.example.moviemania.data.source.remote.interceptor
 
 import com.example.moviemania.BuildConfig
 import okhttp3.Interceptor
