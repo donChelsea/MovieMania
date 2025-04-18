@@ -35,8 +35,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.moviemania.BuildConfig
 import com.example.moviemania.R
-import com.example.moviemania.util.mockMovieUiModel
 import com.example.moviemania.ui.model.MovieUiModel
+import com.example.moviemania.util.mockMovieUiModel
 
 @Composable
 fun ListCard(

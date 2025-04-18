@@ -1,6 +1,5 @@
 package com.example.moviemania.util
 
-import com.example.moviemania.domain.model.Genre
 import com.example.moviemania.ui.model.GenreUiModel
 import com.example.moviemania.ui.model.MovieUiModel
 

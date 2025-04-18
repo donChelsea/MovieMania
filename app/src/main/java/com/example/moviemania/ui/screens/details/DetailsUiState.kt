@@ -1,9 +1,9 @@
 package com.example.moviemania.ui.screens.details
 
 import androidx.compose.runtime.Immutable
-import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.domain.model.VideoUiModel
 import com.example.moviemania.ui.custom.bookmark.BookmarkState
+import com.example.moviemania.ui.model.MovieUiModel
 
 @Immutable
 data class DetailsUiState(

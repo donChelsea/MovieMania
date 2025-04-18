@@ -32,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.moviemania.R
-import com.example.moviemania.util.mockMovieUiModel
-import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.domain.model.VideoUiModel
 import com.example.moviemania.ui.custom.bookmark.BookmarkButtonView
 import com.example.moviemania.ui.custom.bookmark.BookmarkState
@@ -42,10 +40,12 @@ import com.example.moviemania.ui.custom.cards.YoutubePlayerCard
 import com.example.moviemania.ui.custom.groups.CustomChipGroup
 import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
+import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.screens.details.DetailsUiAction
 import com.example.moviemania.ui.screens.details.DetailsUiState
 import com.example.moviemania.ui.screens.details.DetailsViewModel
 import com.example.moviemania.ui.screens.details.ScreenData
+import com.example.moviemania.util.mockMovieUiModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds

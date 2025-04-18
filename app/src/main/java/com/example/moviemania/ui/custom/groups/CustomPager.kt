@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.custom.cards.NowPlayingCard
+import com.example.moviemania.ui.model.MovieUiModel
 import com.google.accompanist.pager.HorizontalPagerIndicator
 
 @Composable

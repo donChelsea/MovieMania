@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.custom.cards.ListCard
 import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
 import com.example.moviemania.ui.custom.states.ShowOffline
+import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.watch_later.ScreenData
 import com.example.moviemania.ui.screens.watch_later.WatchLaterUiAction
@@ -37,14 +37,14 @@ fun WatchLaterScreen(
         }
     }
 
-    WatchlistLayout(
+    WatchLaterLayout(
         state = state,
         onAction = viewModel::handleAction
     )
 }
 
 @Composable
-fun WatchlistLayout(
+fun WatchLaterLayout(
     state: WatchLaterUiState,
     onAction: (WatchLaterUiAction) -> Unit,
 ) {
@@ -53,7 +53,7 @@ fun WatchlistLayout(
         ScreenData.Offline -> ShowOffline()
         ScreenData.Loading -> ShowLoading()
         is ScreenData.Error -> ShowError(message = state.screenData.message)
-        is ScreenData.Data -> WatchlistContent(
+        is ScreenData.Data -> WatchLaterContent(
             movies = state.screenData.movies,
             onAction = onAction
         )
@@ -62,7 +62,7 @@ fun WatchlistLayout(
 
 
 @Composable
-fun WatchlistContent(
+fun WatchLaterContent(
     movies: List<MovieUiModel>,
     onAction: (WatchLaterUiAction) -> Unit,
 ) {

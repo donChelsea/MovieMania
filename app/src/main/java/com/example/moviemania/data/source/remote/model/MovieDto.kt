@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import com.example.moviemania.domain.model.Genre
 import com.example.moviemania.domain.model.Movie
 import com.example.moviemania.domain.model.Video
-import com.example.moviemania.domain.model.VideoUiModel
 import com.example.moviemania.util.convertReleasedDate
 import com.example.moviemania.util.convertRuntime
 import com.google.gson.annotations.SerializedName

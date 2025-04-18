@@ -17,14 +17,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.moviemania.R
-import com.example.moviemania.ui.model.MovieUiModel
+import com.example.moviemania.ui.custom.cards.CarouselCard
 import com.example.moviemania.ui.custom.groups.Carousel
 import com.example.moviemania.ui.custom.groups.CustomPager
-import com.example.moviemania.ui.custom.cards.CarouselCard
 import com.example.moviemania.ui.custom.groups.CustomSectionContainer
 import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
 import com.example.moviemania.ui.custom.states.ShowOffline
+import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.home.HomeUiAction
 import com.example.moviemania.ui.screens.home.HomeUiEvent

@@ -5,7 +5,6 @@ import com.example.moviemania.data.source.remote.model.MovieDto
 import com.example.moviemania.data.source.remote.model.VideoDto
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface MovieApi {
     @GET("trending/movie/day")

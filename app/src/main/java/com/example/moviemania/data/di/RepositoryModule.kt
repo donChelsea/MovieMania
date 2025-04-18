@@ -2,8 +2,8 @@ package com.example.moviemania.data.di
 
 import com.example.moviemania.data.source.local.repository.LocalRepositoryImpl
 import com.example.moviemania.data.source.remote.repository.RemoteRepositoryImpl
-import com.example.moviemania.domain.repository.RemoteRepository
 import com.example.moviemania.domain.repository.LocalRepository
+import com.example.moviemania.domain.repository.RemoteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

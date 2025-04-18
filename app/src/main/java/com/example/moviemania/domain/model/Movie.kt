@@ -2,8 +2,6 @@ package com.example.moviemania.domain.model
 
 import com.example.moviemania.data.source.local.model.MovieEntity
 import com.example.moviemania.ui.model.MovieUiModel
-import com.example.moviemania.util.convertReleasedDate
-import com.example.moviemania.util.convertRuntime
 import javax.annotation.concurrent.Immutable
 
 @Immutable
