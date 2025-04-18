@@ -22,7 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.moviemania.R
-import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
+import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MOVIE_ID
 import com.example.moviemania.ui.screens.details.ui.MovieDetailsScreen
 import com.example.moviemania.ui.screens.home.ui.HomeScreen
 import com.example.moviemania.ui.screens.watch_later.ui.WatchLaterScreen
@@ -63,14 +63,14 @@ fun MovieManiaNavHost() {
                 title = Screen.WatchLater.name
             }
             composable(
-                route = Screen.MovieDetails.route + "/{$MovieId}",
+                route = Screen.MovieDetails.route + "/{$MOVIE_ID}",
                 arguments = listOf(
-                    navArgument(MovieId) {
+                    navArgument(MOVIE_ID) {
                         type = NavType.StringType
                     }
                 )
             ) {
-                MovieDetailsScreen(navController = navController)
+                MovieDetailsScreen()
                 title = Screen.MovieDetails.name
             }
         }

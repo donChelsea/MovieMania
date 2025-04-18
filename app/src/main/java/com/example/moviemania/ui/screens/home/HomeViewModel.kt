@@ -3,7 +3,7 @@ package com.example.moviemania.ui.screens.home
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.ui.MovieManiaViewModel
+import com.example.moviemania.ui.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: MovieRepository,
-) : MovieManiaViewModel<HomeUiState, HomeUiEvent, HomeUiAction>() {
+) : BaseViewModel<HomeUiState, HomeUiEvent, HomeUiAction>() {
     private val _state = MutableStateFlow(HomeUiState())
 
     override val state: StateFlow<HomeUiState>
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun initData() {
-        viewModelScope.launch {
+        safeLaunch {
             combine(
                 repository.getNowPlaying(),
                 repository.getTrending(),
@@ -49,9 +49,9 @@ class HomeViewModel @Inject constructor(
                     upcoming.data.orEmpty().isNotEmpty()
                 ) {
                     ScreenData.Data(
-                        trending = trending.data.orEmpty(),
-                        nowPlaying = nowPlaying.data.orEmpty(),
-                        upcoming = upcoming.data.orEmpty(),
+                        trending = trending.data?.map { it.toUiModel() }.orEmpty(),
+                        nowPlaying = nowPlaying.data?.map { it.toUiModel() }.orEmpty(),
+                        upcoming = upcoming.data?.map { it.toUiModel() }.orEmpty(),
                     )
                 } else {
                     ScreenData.Loading

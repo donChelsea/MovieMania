@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.moviemania.data.local.model.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,7 +15,7 @@ interface MovieDao {
     suspend fun saveMovie(movie: MovieEntity)
 
     @Query("SELECT * FROM movies")
-    fun getSavedMovies(): Flow<List<MovieEntity>>
+    fun getSavedMoviesFlow(): Flow<List<MovieEntity>>
 
     @Delete
     suspend fun deleteMovie(movie: MovieEntity)

@@ -16,8 +16,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,18 +30,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.moviemania.R
-import com.example.moviemania.common.mockMovie
-import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.models.Video
-import com.example.moviemania.ui.composables.bookmark.BookmarkButtonView
-import com.example.moviemania.ui.composables.bookmark.BookmarkState
-import com.example.moviemania.ui.composables.cards.DetailsCardLarge
-import com.example.moviemania.ui.composables.cards.YoutubePlayerCard
-import com.example.moviemania.ui.composables.custom.CustomChipGroup
-import com.example.moviemania.ui.composables.screens.ShowError
-import com.example.moviemania.ui.composables.screens.ShowLoading
+import com.example.moviemania.util.mockMovieUiModel
+import com.example.moviemania.ui.model.MovieUiModel
+import com.example.moviemania.domain.model.VideoUiModel
+import com.example.moviemania.ui.custom.bookmark.BookmarkButtonView
+import com.example.moviemania.ui.custom.bookmark.BookmarkState
+import com.example.moviemania.ui.custom.cards.DetailsCard
+import com.example.moviemania.ui.custom.cards.YoutubePlayerCard
+import com.example.moviemania.ui.custom.groups.CustomChipGroup
+import com.example.moviemania.ui.custom.states.ShowError
+import com.example.moviemania.ui.custom.states.ShowLoading
 import com.example.moviemania.ui.screens.details.DetailsUiAction
 import com.example.moviemania.ui.screens.details.DetailsUiState
 import com.example.moviemania.ui.screens.details.MovieDetailsViewModel
@@ -53,17 +51,9 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
-fun MovieDetailsScreen(
-    navController: NavHostController,
-) {
+fun MovieDetailsScreen() {
     val viewModel: MovieDetailsViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
-
-    LaunchedEffect(key1 = true) {
-        viewModel.events.collect { event ->
-
-        }
-    }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     MovieDetailsLayout(
         state = state,
@@ -80,9 +70,9 @@ fun MovieDetailsLayout(
         ScreenData.Empty -> {}
         ScreenData.Error -> ShowError()
         ScreenData.Loading -> ShowLoading()
-        is ScreenData.Data -> state.screenData.movie?.let {
+        is ScreenData.Data -> state.screenData.movieUiModel?.let {
             MovieDetailsContent(
-                movie = it,
+                movieUiModel = it,
                 trailer = state.screenData.trailer,
                 bookmarkState = state.screenData.bookmarked,
                 onAction = onAction
@@ -93,8 +83,8 @@ fun MovieDetailsLayout(
 
 @Composable
 fun MovieDetailsContent(
-    movie: Movie,
-    trailer: Video?,
+    movieUiModel: MovieUiModel,
+    trailer: VideoUiModel?,
     onAction: (DetailsUiAction) -> Unit,
     bookmarkState: BookmarkState,
 ) {
@@ -108,9 +98,9 @@ fun MovieDetailsContent(
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
-        movie.let { movie ->
+        movieUiModel.let { movie ->
             Box {
-                DetailsCardLarge(movie = movie)
+                DetailsCard(movieUiModel = movie)
 
                 BookmarkButtonView(
                     modifier = Modifier
@@ -194,7 +184,7 @@ fun MovieDetailsContent(
 
             trailer?.let {
                 YoutubePlayerCard(
-                    video = it,
+                    videoUiModel = it,
                     lifecycleOwner = LocalLifecycleOwner.current
                 )
             }
@@ -208,8 +198,8 @@ fun MovieDetailsContent(
 @Composable
 private fun PreviewMovieDetailsContent() {
     MovieDetailsContent(
-        movie = mockMovie,
-        trailer = Video(
+        movieUiModel = mockMovieUiModel,
+        trailer = VideoUiModel(
             id = "1",
             name = "name",
             type = "Trailer",

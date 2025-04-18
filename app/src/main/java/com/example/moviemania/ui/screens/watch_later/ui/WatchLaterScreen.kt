@@ -5,15 +5,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.ui.composables.cards.ListItemCard
-import com.example.moviemania.ui.composables.screens.ShowError
-import com.example.moviemania.ui.composables.screens.ShowLoading
+import com.example.moviemania.ui.model.MovieUiModel
+import com.example.moviemania.ui.custom.cards.ListCard
+import com.example.moviemania.ui.custom.states.ShowError
+import com.example.moviemania.ui.custom.states.ShowLoading
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.watch_later.ScreenData
 import com.example.moviemania.ui.screens.watch_later.WatchLaterUiAction
@@ -26,9 +26,9 @@ fun WatchLaterScreen(
     navController: NavController,
 ) {
     val viewModel: WatchLaterViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(true) {
         viewModel.events.collect { event ->
             when (event) {
                 is WatchLaterUiEvent.OnMovieClicked -> navController.navigate(Screen.MovieDetails.withArgs(event.movieId))
@@ -61,15 +61,15 @@ fun WatchlistLayout(
 
 @Composable
 fun WatchlistContent(
-    movies: List<Movie>,
+    movies: List<MovieUiModel>,
     onAction: (WatchLaterUiAction) -> Unit,
 ) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(movies) { movie ->
-            ListItemCard(
-                movie = movie,
+            ListCard(
+                movieUiModel = movie,
                 onClick = { onAction(WatchLaterUiAction.OnMovieClicked(it)) },
-                onDelete = { onAction(WatchLaterUiAction.onDeleteMovie(it)) }
+                onDelete = { onAction(WatchLaterUiAction.OnDeleteMovie(it)) }
             )
         }
     }

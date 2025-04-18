@@ -1,9 +1,9 @@
 package com.example.moviemania.ui.screens.details
 
 import androidx.compose.runtime.Immutable
-import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.models.Video
-import com.example.moviemania.ui.composables.bookmark.BookmarkState
+import com.example.moviemania.ui.model.MovieUiModel
+import com.example.moviemania.domain.model.VideoUiModel
+import com.example.moviemania.ui.custom.bookmark.BookmarkState
 
 @Immutable
 data class DetailsUiState(
@@ -13,24 +13,27 @@ data class DetailsUiState(
 )
 
 @Immutable
-sealed class DetailsUiEvent {}
+sealed class DetailsUiEvent
 
 @Immutable
 sealed class DetailsUiAction {
     @Immutable
-    data class OnUpdateWatchLater(val movie: Movie, val bookmarked: Boolean) : DetailsUiAction()
+    data class OnUpdateWatchLater(
+        val movieUiModel: MovieUiModel,
+        val bookmarked: Boolean
+    ) : DetailsUiAction()
 }
 
 @Immutable
 sealed class ScreenData {
-    object Empty : ScreenData()
-    object Loading : ScreenData()
-    object Error : ScreenData()
+    data object Empty : ScreenData()
+    data object Loading : ScreenData()
+    data object Error : ScreenData()
 
     @Immutable
     data class Data(
-        val movie: Movie? = null,
-        val trailer: Video? = null,
+        val movieUiModel: MovieUiModel? = null,
+        val trailer: VideoUiModel? = null,
         val bookmarked: BookmarkState = BookmarkState.NotBookmarked,
     ) : ScreenData()
 }

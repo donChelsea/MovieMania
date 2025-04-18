@@ -2,12 +2,11 @@ package com.example.moviemania.data.remote.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.moviemania.data.Resource
 import com.example.moviemania.data.remote.MovieApi
-import com.example.moviemania.data.remote.dtos.mappers.toDomain
-import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.models.Video
+import com.example.moviemania.domain.model.Movie
+import com.example.moviemania.domain.model.Video
 import com.example.moviemania.domain.repository.MovieRepository
-import com.example.moviemania.common.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

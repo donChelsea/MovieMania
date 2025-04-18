@@ -2,12 +2,11 @@ package com.example.moviemania.ui.screens.details
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.example.moviemania.domain.repository.MovieRepository
 import com.example.moviemania.domain.repository.WatchLaterRepository
-import com.example.moviemania.ui.MovieManiaViewModel
-import com.example.moviemania.ui.composables.bookmark.BookmarkState
-import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MovieId
+import com.example.moviemania.ui.common.BaseViewModel
+import com.example.moviemania.ui.custom.bookmark.BookmarkState
+import com.example.moviemania.ui.navigation.Screen.MovieDetailArgs.MOVIE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,13 +24,13 @@ class MovieDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val movieRepository: MovieRepository,
     private val watchLaterRepository: WatchLaterRepository,
-) : MovieManiaViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
+) : BaseViewModel<DetailsUiState, DetailsUiEvent, DetailsUiAction>() {
     private val _state = MutableStateFlow(DetailsUiState())
 
     override val state: StateFlow<DetailsUiState>
         get() = _state.asStateFlow()
 
-    private val movieId = savedStateHandle[MovieId] ?: ""
+    private val movieId = savedStateHandle[MOVIE_ID] ?: ""
     private var isBookmarked: BookmarkState = BookmarkState.NotBookmarked
 
     init {
@@ -42,15 +40,15 @@ class MovieDetailsViewModel @Inject constructor(
     override fun handleAction(action: DetailsUiAction) {
         when (action) {
             is DetailsUiAction.OnUpdateWatchLater -> {
-                viewModelScope.launch {
+                safeLaunch {
                     if (action.bookmarked) {
-                        watchLaterRepository.deleteMovie(action.movie)
+                        watchLaterRepository.deleteMovie(action.movieUiModel.toEntity())
                         isBookmarked = BookmarkState.NotBookmarked
-                        newUiState(ScreenData.Data(movie = action.movie, bookmarked = isBookmarked))
+                        newUiState(ScreenData.Data(movieUiModel = action.movieUiModel, bookmarked = isBookmarked))
                     } else {
-                        watchLaterRepository.saveMovie(action.movie)
+                        watchLaterRepository.saveMovie(action.movieUiModel.toEntity())
                         isBookmarked = BookmarkState.Bookmarked
-                        newUiState(ScreenData.Data(movie = action.movie, bookmarked = isBookmarked))
+                        newUiState(ScreenData.Data(movieUiModel = action.movieUiModel, bookmarked = isBookmarked))
                     }
                 }
             }
@@ -58,7 +56,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun initData() {
-        viewModelScope.launch {
+        safeLaunch {
             combine(
                 watchLaterRepository.getSavedMovies(),
                 movieRepository.getMovieDetails(movieId = movieId),
@@ -73,7 +71,7 @@ class MovieDetailsViewModel @Inject constructor(
                     val trailer = videos.data?.first {
                         (it.type == "Teaser" || it.type == "Clip") && it.site == "YouTube"
                     }
-                    ScreenData.Data(movie = details.data, trailer = trailer, bookmarked = isBookmarked)
+                    ScreenData.Data(movieUiModel = details.data.toUiModel(), trailer = trailer?.toUiModel(), bookmarked = isBookmarked)
                 } else {
                     ScreenData.Loading
                 }

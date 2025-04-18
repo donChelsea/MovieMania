@@ -1,8 +1,8 @@
 package com.example.moviemania.domain.repository
 
-import com.example.moviemania.domain.models.Movie
-import com.example.moviemania.domain.models.Video
-import com.example.moviemania.common.Resource
+import com.example.moviemania.data.Resource
+import com.example.moviemania.domain.model.Movie
+import com.example.moviemania.domain.model.Video
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {

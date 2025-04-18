@@ -1,12 +1,12 @@
 package com.example.moviemania.ui.navigation
 
 sealed class Screen(val route: String, val name: String) {
-    object Home: Screen("home", "Home")
-    object WatchLater: Screen("watchLater", "Watch Later")
-    object MovieDetails: Screen("movieDetails", "Details")
+    data object Home: Screen("home", "Home")
+    data object WatchLater: Screen("watch_later", "Watch Later")
+    data object MovieDetails: Screen("details", "Details")
 
     object MovieDetailArgs {
-        const val MovieId = "movieId"
+        const val MOVIE_ID = "movie_id"
     }
 
     fun withArgs(vararg args: Int): String {

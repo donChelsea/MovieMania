@@ -1,7 +1,7 @@
 package com.example.moviemania.ui.screens.home
 
 import androidx.compose.runtime.Immutable
-import com.example.moviemania.domain.models.Movie
+import com.example.moviemania.ui.model.MovieUiModel
 
 @Immutable
 data class HomeUiState(
@@ -22,14 +22,14 @@ sealed class HomeUiAction {
 
 @Immutable
 sealed class ScreenData {
-    object Initial : ScreenData()
-    object Loading : ScreenData()
-    object Error : ScreenData()
+    data object Initial : ScreenData()
+    data object Loading : ScreenData()
+    data object Error : ScreenData()
 
     @Immutable
     data class Data(
-        val trending: List<Movie> = emptyList(),
-        val nowPlaying: List<Movie> = emptyList(),
-        val upcoming: List<Movie> = emptyList(),
+        val trending: List<MovieUiModel> = emptyList(),
+        val nowPlaying: List<MovieUiModel> = emptyList(),
+        val upcoming: List<MovieUiModel> = emptyList(),
     ) : ScreenData()
 }
