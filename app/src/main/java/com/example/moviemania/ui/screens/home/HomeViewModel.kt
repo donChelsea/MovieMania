@@ -1,5 +1,6 @@
 package com.example.moviemania.ui.screens.home
 
+import androidx.compose.runtime.compositionLocalOf
 import com.example.moviemania.data.ConnectionManager
 import com.example.moviemania.domain.use_case.GetNowPlayingUseCase
 import com.example.moviemania.domain.use_case.GetTrendingUseCase
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+
+val localHomeUiState = compositionLocalOf { HomeUiState() }
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(

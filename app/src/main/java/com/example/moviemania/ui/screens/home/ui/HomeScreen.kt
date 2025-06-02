@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,13 +25,12 @@ import com.example.moviemania.ui.custom.groups.CustomSectionContainer
 import com.example.moviemania.ui.custom.states.ShowError
 import com.example.moviemania.ui.custom.states.ShowLoading
 import com.example.moviemania.ui.custom.states.ShowOffline
-import com.example.moviemania.ui.model.MovieUiModel
 import com.example.moviemania.ui.navigation.Screen
 import com.example.moviemania.ui.screens.home.HomeUiAction
 import com.example.moviemania.ui.screens.home.HomeUiEvent
-import com.example.moviemania.ui.screens.home.HomeUiState
 import com.example.moviemania.ui.screens.home.HomeViewModel
 import com.example.moviemania.ui.screens.home.ScreenData
+import com.example.moviemania.ui.screens.home.localHomeUiState
 
 @Composable
 fun HomeScreen(
@@ -47,52 +47,46 @@ fun HomeScreen(
         }
     }
 
-    HomeLayout(
-        state = state,
-        onAction = viewModel::handleAction
-    )
-}
-
-@Composable
-fun HomeLayout(
-    state: HomeUiState,
-    onAction: (HomeUiAction) -> Unit,
-) {
-    when (state.screenData) {
-        ScreenData.Initial -> {}
-        ScreenData.Offline -> ShowOffline()
-        ScreenData.Loading -> ShowLoading()
-        is ScreenData.Error -> ShowError(message = state.screenData.message)
-        is ScreenData.Data -> HomeContent(
-            trending = state.screenData.trending,
-            nowPlaying = state.screenData.nowPlaying,
-            upcoming = state.screenData.upcoming,
-            onAction = onAction
+    CompositionLocalProvider(localHomeUiState provides state) {
+        HomeLayout(
+            onAction = viewModel::handleAction
         )
     }
 }
 
 @Composable
+fun HomeLayout(
+    onAction: (HomeUiAction) -> Unit,
+) {
+    when (val screenData = localHomeUiState.current.screenData) {
+        ScreenData.Initial -> {}
+        ScreenData.Offline -> ShowOffline()
+        ScreenData.Loading -> ShowLoading()
+        is ScreenData.Error -> ShowError(message = screenData.message)
+        is ScreenData.Data -> HomeContent(onAction = onAction)
+    }
+}
+
+@Composable
 fun HomeContent(
-    trending: List<MovieUiModel>,
-    nowPlaying: List<MovieUiModel>,
-    upcoming: List<MovieUiModel>,
     onAction: (HomeUiAction) -> Unit
 ) {
+    val moviesLists = localHomeUiState.current.screenData as ScreenData.Data
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         CustomSectionContainer(title = stringResource(id = R.string.now_playing)) {
-            CustomPager(data = nowPlaying) { onAction(HomeUiAction.OnMovieClicked(it)) }
+            CustomPager(data = moviesLists.nowPlaying) { onAction(HomeUiAction.OnMovieClicked(it)) }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
         CustomSectionContainer(title = stringResource(id = R.string.trending)) {
             Carousel {
-                items(trending) { movie ->
+                items(moviesLists.trending) { movie ->
                     CarouselCard(movieUiModel = movie) {
                         onAction(HomeUiAction.OnMovieClicked(it))
                     }
@@ -104,7 +98,7 @@ fun HomeContent(
 
         CustomSectionContainer(title = stringResource(id = R.string.upcoming)) {
             Carousel {
-                items(upcoming) { movie ->
+                items(moviesLists.upcoming) { movie ->
                     CarouselCard(movieUiModel = movie) {
                         onAction(HomeUiAction.OnMovieClicked(it))
                     }
